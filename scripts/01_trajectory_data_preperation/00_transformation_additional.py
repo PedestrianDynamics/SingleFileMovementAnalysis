@@ -21,10 +21,10 @@ def get_parser_args():
                                                    'BaSiGo_germany_Ziemer'
                                                    'schoolWDGMainCircle_germany_Wang'
                                                    'schoolGymBayMainCircle_germany_Wang'
-                                                   'students_china_Cao'
+                                                   'age_china_cao'
                                                    'gender_palestine_Subaih'
                                                    'caserne_germany_Seyfried'
-                                                   'OhneMotivation_germany_lukowski')
+                                                   'otivation_without_germany_lukowski')
     return parser.parse_args()
 
 
@@ -48,12 +48,12 @@ Experiment = {
                                            "- Transformation: reflection over y-axis, horizontal translation right "
                                            "1.85, vertical translation up "
                                            "1.25",
-    'students_china_Cao': "Description: \n"
-                          "- Experiment: students_china_Cao \n"
-                          "- Link: https://ped.fz-juelich.de/db/lib/exe/detail.php?id=start&media=img"
-                          ":ring_mixed_09_30_2382.jpg "
-                          "\n- Transformation: (x, y, z) cm -> m, horizontal translation right 2.5, vertical "
-                          "translation up 2.5",
+    'age_china_cao': "Description: \n"
+                     "- Experiment: age_china_cao \n"
+                     "- Link: https://ped.fz-juelich.de/db/lib/exe/detail.php?id=start&media=img"
+                     ":ring_mixed_09_30_2382.jpg "
+                     "\n- Transformation: (x, y, z) cm -> m, horizontal translation right 2.5, vertical "
+                     "translation up 2.5",
     'gender_palestine_Subaih': "Description: \n"
                                "- Experiment: gender_palestine_Subaih \n"
                                "- Link: https://ped.fz-juelich.de/da/doku.php?id=gender_single_file \n"
@@ -64,10 +64,10 @@ Experiment = {
                                 "- Transformation: measurement area data, horizontal translation right 2, take only "
                                 "the data "
                                 "starting from 0 until the length pf the measurement area",
-    'OhneMotivation_germany_lukowski': "Description: \n"
-                                       "- Experiment: OhneMotivation_germany_lukowski \n"
-                                       "- Transformation: add z-axis value = 0, (x, y, z) cm -> m, horizontal "
-                                       "translation right 1"
+    'otivation_without_germany_lukowski': "Description: \n"
+                                          "- Experiment: otivation_without_germany_lukowski \n"
+                                          "- Transformation: add z-axis value = 0, (x, y, z) cm -> m, horizontal "
+                                          "translation right 1"
 }
 
 
@@ -84,7 +84,7 @@ def process_data(arr, experiment_name):
         arr[:, 2], arr[:, 3] = arr[:, 2] + 1.25, -arr[:, 3] + 1.85
     elif experiment_name == "schoolGymBayMainCircle_germany_Wang":
         arr[:, 2], arr[:, 3] = arr[:, 3] + 1.25, -arr[:, 2] + 1.85
-    elif experiment_name == "students_china_Cao":
+    elif experiment_name == "age_china_cao":
         arr[:, 2], arr[:, 3], arr[:, 4] = (arr[:, 2] / 100) + 2.5, (arr[:, 3] / 100) + 2.5, arr[:, 4] / 100
     elif experiment_name == "gender_palestine_Subaih":
         arr = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3, 4))
@@ -93,7 +93,7 @@ def process_data(arr, experiment_name):
     elif experiment_name == "caserne_germany_Seyfried":
         arr = arr[(arr[:, 2] >= -2) & (arr[:, 2] <= 2)]
         arr[:, 2] = arr[:, 2] + 2
-    elif experiment_name == "OhneMotivation_germany_lukowski":
+    elif experiment_name == "otivation_without_germany_lukowski":
         arr = np.append(arr, [[0] for _ in range(len(arr[:, 0]))], axis=1)
         arr[:, 2], arr[:, 3], arr[:, 4] = (arr[:, 2] / 100) + 1, arr[:, 3] / 100, arr[:, 4] / 100
     return arr
