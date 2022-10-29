@@ -4,9 +4,8 @@ Visualise the straight trajectories spatially (x-y)
 """
 import os
 import argparse
-
+import numpy as np
 import matplotlib.pyplot as plt
-from numpy import *
 
 
 def get_parser_args():
@@ -16,7 +15,7 @@ def get_parser_args():
     """
     parser = argparse.ArgumentParser(description='Plot the trajectories of pedestrians x-y (straight transformed '
                                                  'trajectories)')
-    parser.add_argument("-p", "--path", default="./", help='Enter the path of the trajectory file')
+    parser.add_argument("-p", "--path", help='Enter the path of the trajectory file')
     parser.add_argument("-t", "--title", help='Enter the title for the figure')
     return parser.parse_args()
 
@@ -29,7 +28,7 @@ if __name__ == '__main__':
 
     fig = plt.figure(figsize=(7, 6))
 
-    data = loadtxt(path, usecols=(0, 1, 2, 3, 4))
+    data = np.loadtxt(path, usecols=(0, 1, 2, 3, 4))
     data = data[data[:, 0] == 1]
 
     plt.plot(data[:, 2], data[:, 3], "bo", markersize=0.3)
