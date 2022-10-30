@@ -1,38 +1,49 @@
 # SingleFileMovementAnalysis
 
 ## Introduction
-This repository contains scripts for analyzing single-file movement experiments recorded by a top-view (straight, oval),
-or side-view camera 
 
-- Example (top-view camera): 
-   - School GymBay,main circle. 
-   - Link: https://ped.fz-juelich.de/da/doku.php?id=start#single-file_motion_of_pupils
+This repository contains scripts for analyzing single-file movement experiments
+recorded by a top-view (straight, oval), or side-view camera
+
+- Example (top-view camera):
+   - School GymBay, main circle.
+   - [Link](https://ped.fz-juelich.de/da/doku.php?id=start#single-file_motion_of_pupils)
 
    ![gymbaymain](https://user-images.githubusercontent.com/4458692/197472324-e9e65cb2-3468-40f2-b7a3-a79d1d71868c.png)
 
 - Example of (side-view camera)
    - Influence of gender in single-file movement.
-   - Link: https://ped.fz-juelich.de/da/doku.php?id=gender_single_file 
+   - [Link](https://ped.fz-juelich.de/da/doku.php?id=gender_single_file)
    
    ![gender_single_file_sample](https://user-images.githubusercontent.com/4458692/197808563-9babbeb4-ae5f-4401-b074-e81118d4f4eb.png)
 
-## Prerequisites
-The scripts are written and tested on Linux Mint 20.1 Cinnamon, and python version 3.8.10
+Analysis results and trajectories used in this README can be downloaod from this [link](https://fz-juelich.sciebo.de/s/6aWC04GmM0mKlTE).
 
-## Description
-This is an analysis framework for single-file movement experiments:
+## Requirements
 
-1. For some experiments, we need to make some transformation to the trajectory data to modify it as the standard 
-   coordination system such as rotation, transition (this step depends on the experiment). Use script 
+Download and install the requirements  with
+
+```bash
+pip3 install -r requirements.txt
+```
+
+## Description of the scripts
+
+The analysis framework is organized in the following steps:
+
+1. Preprocessing: for some experiments, trajectory data may require some transformation (rotation , transition, etc).
+   Use script
    ``scripts/01_trajectory_data_preperation/transformation_additional.py``.
 2. Transform the oval to straight trajectory data. Use script ``scripts/01_trajectory_data_preperation/
    transformation_straight_traj.py``
-3. Calculate the individual velocity, headway, and 1D Voronoi density for pedestrians. Use the 
+3. Calculate the individual velocity, headway, and 1D Voronoi density. Use the
    script ``scripts/02_calculate_vel_rho_headway/cal_vel_rho_headway.py``.
-4. To extract and save only the steady state data, first plot the time-vel-rho relation ``scripts/03_plotting/
-   plot_timeseries_rho_v.py`` 
-   then decide the frames (start, end) of the steady state manually after visually view the plot, and then use 
-   the scrip ``scripts/02_calculate_vel_rho_headway/steady_state_data.py`` to extract the steady state data.
+4. To extract and save only the steady state data, first plot the timeseries of density and speed with the script
+   ``scripts/03_plotting/plot_timeseries_rho_v.py``
+   then manually extract, by visual inspection, the frames (start, end) of the steady state.
+   `start` and `end` can be used as input to the script
+   ``scripts/02_calculate_vel_rho_headway/steady_state_data.py``
+   to extract the steady state data.
 5. For visualization of different correlations:
    - deciding the steady state ``scripts/03_plotting/plot_timeseries_rho_v.py``
    ![timeseries_rho_vel](https://user-images.githubusercontent.com/4458692/197458149-0b1a230c-38df-4303-b6a1-bd1e22ee4b88.png)
@@ -55,18 +66,8 @@ This is an analysis framework for single-file movement experiments:
    ![schoole_GymBay_main_binning_h_vel](https://user-images.githubusercontent.com/4458692/197457493-2c1a78f8-96ff-4b4c-93da-cfce57e95497.png)
    ![schoole_GymBay_main_binning_rho_vel](https://user-images.githubusercontent.com/4458692/197457504-46f04bd9-1b74-4d31-aeac-558d1161bca5.png)
 
-NOTE:
-1. To run any script inside ``scripts`` directory, write on the command line: ``PYTHONPATH="." python3 <CHILD DIRECTORY NAME>/<SCRIPT NAME>.py <ARGUMENTS>`` 
-2. To calculate the velocity_headway_rho of top-view camera experiments that captured only the straight measurement 
-   area such as the Caserne experiment https://ped.fz-juelich.de/da/doku.php?id=corridor2 we use the same analysis 
-   methodology of side-view experiments 
+## Note
 
-## Demos
-Here is a demo file for all the analysis results: https://fz-juelich.sciebo.de/s/olee9rvxmTnzQAF
-
-## Requirements
-Download and install the requirement list (python libraries):
-``
-pip3 install -r requirements.txt
-``
-
+To calculate the velocity_headway_rho of top-view camera experiments that captured only the straight measurement
+   area such as the [Caserne experiment](https://ped.fz-juelich.de/da/doku.php?id=corridor2) we use the same analysis
+   methodology of side-view experiments
