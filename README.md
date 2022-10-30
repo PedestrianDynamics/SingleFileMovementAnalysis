@@ -17,7 +17,7 @@ recorded by a top-view (straight, oval), or side-view camera
    
    ![gender_single_file_sample](https://user-images.githubusercontent.com/4458692/197808563-9babbeb4-ae5f-4401-b074-e81118d4f4eb.png)
 
-Analysis results and trajectories used in this README can be downloaod from this [link](https://fz-juelich.sciebo.de/s/6aWC04GmM0mKlTE).
+Analysis results and trajectories used in this README can be download from this [link](https://fz-juelich.sciebo.de/s/6aWC04GmM0mKlTE).
 
 ## Requirements
 
@@ -27,33 +27,27 @@ Download and install the requirements  with
 pip3 install -r requirements.txt
 ```
 
-## Description of the scripts
+## Description of some scripts
 
-The analysis framework is organized in the following steps:
+| Script | Description |
+| --- | --- |
+| [00_transformation_additional.py](scripts/01_trajectory_data_preperation/00_transformation_additional.py) | Trajectory data may require some transformation (rotation , transition, etc). |
+| [01_transformation_straight_traj.py](scripts/01_trajectory_data_preperation/01_transformation_straight_traj.py) | Transform oval to straight trajectory data accoring to [Ziemer](https://link.springer.com/chapter/10.1007/978-3-319-33482-0_12). |
+|[00_cal_vel_rho_headway.py](scripts/02_calculate_vel_rho_headway/00_cal_vel_rho_headway.py)|Calculate the individual velocity, headway, and 1D Voronoi density.|
+|[02_plot_timeseries_rho_v.py](scripts/03_plotting/02_plot_timeseries_rho_v.py)|Plot timeseries of density and speed.|
+|[01_extract_steadyState_data.py](scripts/02_calculate_vel_rho_headway/01_extract_steadyState_data.py)|extract the steady state data.|
 
-1. Preprocessing: for some experiments, trajectory data may require some transformation (rotation , transition, etc).
-   Use script
-   ``scripts/01_trajectory_data_preperation/transformation_additional.py``.
-2. Transform the oval to straight trajectory data. Use script ``scripts/01_trajectory_data_preperation/
-   transformation_straight_traj.py``
-3. Calculate the individual velocity, headway, and 1D Voronoi density. Use the
-   script ``scripts/02_calculate_vel_rho_headway/cal_vel_rho_headway.py``.
-4. To extract and save only the steady state data, first plot the timeseries of density and speed with the script
-   ``scripts/03_plotting/plot_timeseries_rho_v.py``
-   then manually extract, by visual inspection, the frames (start, end) of the steady state.
-   `start` and `end` can be used as input to the script
-   ``scripts/02_calculate_vel_rho_headway/steady_state_data.py``
-   to extract the steady state data.
-5. For visualization of different correlations:
-   - deciding the steady state ``scripts/03_plotting/plot_timeseries_rho_v.py``
+
+## Example 
+
+   - determining the steady state ``scripts/03_plotting/plot_timeseries_rho_v.py``
    ![timeseries_rho_vel](https://user-images.githubusercontent.com/4458692/197458149-0b1a230c-38df-4303-b6a1-bd1e22ee4b88.png)
 
    - the fundamental diagram (FD, rho-vel), and headway-velocity ``scripts/03_plotting/plot_rho_h_vel.py``
    ![schoolGymBay_rho_vel](https://user-images.githubusercontent.com/4458692/197454439-f8ad5ae2-10a6-453e-8251-d7edf31d6803.png)
    ![schoolGymBay_h_vel](https://user-images.githubusercontent.com/4458692/197454455-d8ddcd18-165d-4185-9f73-7ff91f85109d.png)
 
-   - the trajectories as it is extracted from the experiments using PeTrack or other tools``scripts/03_plotting/
-     plot_traj_raw.py``
+   - the trajectories ``scripts/03_plotting/plot_traj_raw.py``
    ![GymBay_main_15_1](https://user-images.githubusercontent.com/4458692/197454570-d407cd02-980c-454a-b352-d7cda753de8a.png)
 
    - the trajectories after transformation ``scripts/03_plotting/plot_traj_straight.py``
@@ -69,5 +63,5 @@ The analysis framework is organized in the following steps:
 ## Note
 
 To calculate the velocity_headway_rho of top-view camera experiments that captured only the straight measurement
-   area such as the [Caserne experiment](https://ped.fz-juelich.de/da/doku.php?id=corridor2) we use the same analysis
-   methodology of side-view experiments
+area such as the [Caserne experiment](https://ped.fz-juelich.de/da/doku.php?id=corridor2), we use the same analysis
+methodology of side-view experiments.
