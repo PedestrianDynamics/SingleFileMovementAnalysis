@@ -3,9 +3,9 @@
 transforming the oval corridor trajectories to straight trajectories using the same formulas in Ziemer2016 with
 some modifications
 """
-from numpy import *
+import numpy as np
 import os
-from helper import *
+from helper import transformation_coord
 import time
 import argparse
 
@@ -16,13 +16,13 @@ def get_parser_args():
     :return: parser of arguments
     """
     parser = argparse.ArgumentParser(description='transform 00_raw trajectories to straight trajectories (Ziemer2016)')
-    parser.add_argument("-p", "--path", default="./", help='Enter the path of the trajectory file')
+    parser.add_argument("-p", "--path", help='Enter the path of the trajectory file')
     parser.add_argument("-l", "--length", type=float, default=2.5, help='Enter the length (meter) of the straight part '
-                                                                        'of the oval set-up')
+                                                                        'of the oval set-up (default=2.5)')
     parser.add_argument("-r", "--radius", type=float, default=1.85, help='Enter the radius (meter) of the corner in '
                                                                          'oval set-up (measured from the center of '
                                                                          'the corner circle to the middle of the '
-                                                                         'corridor)')
+                                                                         'corridor)(default=1.85)')
     return parser.parse_args()
 
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     # record start time
     start = time.time()
 
-    data = loadtxt(path, usecols=(0, 1, 2, 3, 4))
+    data = np.loadtxt(path, usecols=(0, 1, 2, 3, 4))
     data_new = np.empty((0, 5), int)
 
     for row in data:

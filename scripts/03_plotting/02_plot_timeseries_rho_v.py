@@ -16,7 +16,7 @@ def get_parser_args():
     """
     parser = argparse.ArgumentParser(description='Plot the change of velocity and density over time to find the steady '
                                                  'state')
-    parser.add_argument("-p", "--pathfile", default="./", help='Enter the path of the vel_h_rho file')
+    parser.add_argument("-p", "--pathfile", default="./", help='Enter the path of the vel_h_rho file (default="./")')
     return parser.parse_args()
 
 
@@ -32,8 +32,8 @@ if __name__ == '__main__':
     plt.plot(data.FR, data.density, 'r-', label="Density")
     plt.plot(data.FR, data.vel, 'b-', label="Velocity")
 
-    plt.axvline(x=0, linestyle="--")
-    plt.axvline(x=2300, linestyle="--")
+    plt.axvline(x=600, linestyle="--")
+    plt.axvline(x=1600, linestyle="--")
     plt.legend()
 
     print("Minimum frame: ", data.FR.min())

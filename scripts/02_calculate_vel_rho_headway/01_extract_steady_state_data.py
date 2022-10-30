@@ -4,8 +4,7 @@ to save only the steady state data
 """
 import argparse
 
-import pandas as pd
-from numpy import *
+import numpy as np
 
 
 def get_parser_args():
@@ -33,10 +32,10 @@ if __name__ == '__main__':
         header = "#id\tfr\tx\ty\tz\tvelocity\theadway\trho"
         fmt = '%d\t%d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f'
 
-        data = pd.read_csv("%s/%s" % (path, file), comment="#", sep="\t", names=n)
+        data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3, 4, 5, 6, 7))
 
-        rho_v = data.loc[data['fr'] > st]
-        rho_v = rho_v.loc[rho_v['fr'] < en]
+        rho_v = data[data[:, 1] > st]
+        rho_v = rho_v[rho_v[:, 1] < en]
 
         spath = "%s/%s_steadystate.txt" % (path, file)
-        savetxt(spath, rho_v, delimiter='\t', header=header, comments='', newline='\r\n', fmt=fmt)
+        np.savetxt(spath, rho_v, delimiter='\t', header=header, comments='', newline='\r\n', fmt=fmt)
