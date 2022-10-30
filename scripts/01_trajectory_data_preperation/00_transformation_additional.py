@@ -18,13 +18,13 @@ def get_parser_args():
     parser.add_argument("-p", "--path", help='Enter the path to the directory contains the trajectory files')
     parser.add_argument("-n", "--filename", help='Enter the trajectory file names', nargs="+")
     parser.add_argument("-expn", "--expName", help='Enter the experiment name: '
-                                                   'BaSiGo_germany_Ziemer'
-                                                   'schoolWDGMainCircle_germany_Wang'
-                                                   'schoolGymBayMainCircle_germany_Wang'
-                                                   'age_china_cao'
-                                                   'gender_palestine_Subaih'
-                                                   'caserne_germany_Seyfried'
-                                                   'otivation_without_germany_lukowski')
+                                                   'BaSiGo_germany_Ziemer \n'
+                                                   'schoolWDGMainCircle_germany_Wang \n'
+                                                   'schoolGymBayMainCircle_germany_Wang \n'
+                                                   'age_china_cao \n'
+                                                   'gender_palestine_Subaih \n'
+                                                   'caserne_germany_Seyfried \n'
+                                                   'motivation_germany_lukowski')
     return parser.parse_args()
 
 
@@ -63,11 +63,11 @@ Experiment = {
                                 "- Link: https://ped.fz-juelich.de/da/doku.php?id=corridor2 \n"
                                 "- Transformation: measurement area data, horizontal translation right 2, take only "
                                 "the data "
-                                "starting from 0 until the length pf the measurement area",
-    'otivation_without_germany_lukowski': "Description: \n"
-                                          "- Experiment: otivation_without_germany_lukowski \n"
-                                          "- Transformation: add z-axis value = 0, (x, y, z) cm -> m, horizontal "
-                                          "translation right 1"
+                                "starting from 0 until the length of the measurement area = 4m",
+    'motivation_germany_lukowski': "Description: \n"
+                                           "- Experiment: motivation_without_germany_lukowski \n"
+                                           "- Transformation: add z-axis value = 0, (x, y, z) cm -> m, take only the "
+                                        "data starting from 0 until the length of the measurement area = 2m"
 }
 
 
@@ -93,9 +93,10 @@ def process_data(arr, experiment_name):
     elif experiment_name == "caserne_germany_Seyfried":
         arr = arr[(arr[:, 2] >= -2) & (arr[:, 2] <= 2)]
         arr[:, 2] = arr[:, 2] + 2
-    elif experiment_name == "otivation_without_germany_lukowski":
+    elif experiment_name == "motivation_germany_lukowski":
         arr = np.append(arr, [[0] for _ in range(len(arr[:, 0]))], axis=1)
-        arr[:, 2], arr[:, 3], arr[:, 4] = (arr[:, 2] / 100) + 1, arr[:, 3] / 100, arr[:, 4] / 100
+        arr[:, 2], arr[:, 3], arr[:, 4] = (arr[:, 2] / 100), arr[:, 3] / 100, arr[:, 4] / 100
+        arr = arr[(arr[:, 2] >= 0) & (arr[:, 2] < 2)]
     return arr
 
 
