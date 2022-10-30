@@ -18,14 +18,15 @@ def get_parser_args():
     parser = argparse.ArgumentParser(description='Calculate the movement quantities velocity, rho, and headway')
     parser.add_argument("-p", "--path", help='Enter the path of directory that contain trajectory (straight '
                                              'transformed trajectory) files')
-    parser.add_argument('-fr', "--framePerSecond", type=float, default="16", help="Enter the fps the camera "
-                                                                                  "recorded")
-    parser.add_argument('-deltat', "--deltaTime", type=float, default="0.4", help="Enter the time constant to "
-                                                                                  "calculate the velocity")
-    parser.add_argument('-c', "--circumference", type=float, default="26.8496", help="Enter setup circumference")
-    parser.add_argument("-et", "--expType", type=float, default="0", help='Enter the type of the experiment:'
-                                                                          '0 => top_view, 1 => side_view')
-    parser.add_argument("-n", "--expName", default="BaSiGo", help='Enter the name of the experiment')
+    parser.add_argument('-fr', "--framePerSecond", type=float, default=16, help="Enter the fps the camera "
+                                                                                "recorded (default=16)")
+    parser.add_argument('-deltat', "--deltaTime", type=float, default=0.4, help="Enter the time constant to "
+                                                                                "calculate the velocity (default=0.4)")
+    parser.add_argument('-c', "--circumference", type=float, default=26.8496, help="Enter setup circumference "
+                                                                                   "default=26.8496")
+    parser.add_argument("-et", "--expType", type=float, default=0, help='Enter the type of the experiment:'
+                                                                        '0 => top_view, 1 => side_view (default=0)')
+    parser.add_argument("-n", "--expName", help='Enter the name of the experiment')
     return parser.parse_args()
 
 
@@ -66,7 +67,7 @@ if __name__ == '__main__':
                 # B. Calculate pedestrian velocity
                 if exp_type == 0:
                     velocity = individual_velocity_top_view(data, frame_data, delta_t, fr, frame_start,
-                                                   frame_end, fps, c)
+                                                            frame_end, fps, c)
                     # C. Calculate pedestrians' headway
                     # Calculate the headway by taking the difference between each row x value and the previous
                     headway = np.diff(frame_data[:, 2])
