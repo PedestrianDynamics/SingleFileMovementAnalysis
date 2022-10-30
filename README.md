@@ -1,8 +1,8 @@
 # SingleFileMovementAnalysis
 
 ## Introduction
-This repository contains scripts for analyzing single-file movement experiments recorded by a top-view (straight, oval),
-or side-view camera 
+This repository contains scripts for analyzing single-file movement experiments recorded by a top-view (straight, oval)
+or side-view camera, and pedestrians walk anticlockwise
 
 - Example (top-view camera): 
    - School GymBay,main circle. 
