@@ -36,7 +36,7 @@ Experiment = {
                              "vertical translation up",
     'schoolWDGMainCircle_germany_Wang': "Description: \n"
                                         "- Experiment: schoolWDGMainCircle_germany_Wang \n"
-                                        "- Link: Link: https://ped.fz-juelich.de/da/doku.php?id=start#single"
+                                        "- Link: https://ped.fz-juelich.de/da/doku.php?id=start#single"
                                         "-file_motion_of_pupils \n "
                                         "- Transformation: reflection over y-axis, horizontal translation right 1.85, "
                                         "vertical translation up "
@@ -45,8 +45,8 @@ Experiment = {
                                            "- Experiment: schoolGymBayMainCircle_germany_Wang \n"
                                            "- Link: https://ped.fz-juelich.de/da/doku.php?id=start#single"
                                            "-file_motion_of_pupils \n "
-                                           "- Transformation: reflection over y-axis, horizontal translation right "
-                                           "1.85, vertical translation up "
+                                           "- Transformation: rotate 90 degree, horizontal translation right "
+                                           "1.85, vertical translation up 1.25"
                                            "1.25",
     'age_china_cao': "Description: \n"
                      "- Experiment: age_china_cao \n"
@@ -67,7 +67,13 @@ Experiment = {
     'motivation_germany_lukowski': "Description: \n"
                                            "- Experiment: motivation_without_germany_lukowski \n"
                                            "- Transformation: add z-axis value = 0, (x, y, z) cm -> m, take only the "
-                                        "data starting from 0 until the length of the measurement area = 2m"
+                                        "data starting from 0 until the length of the measurement area = 2m",
+    # 'schoolGymBayAncillaryCircle_germany_Wang': "Description: \n"
+    #                                     "- Experiment: schoolGymBayAncillaryCircle_germany_Wang \n"
+    #                                     "- Link: https://ped.fz-juelich.de/da/doku.php?id=start#single"
+    #                                             "-file_motion_of_pupils \n "
+    #                                     "- Transformation: (x, y, z) cm -> m, rotate 90 degree, horizontal translation"
+    #                                             " right 1.85, vertical translation up 1.25"
 }
 
 
@@ -97,6 +103,9 @@ def process_data(arr, experiment_name):
         arr = np.append(arr, [[0] for _ in range(len(arr[:, 0]))], axis=1)
         arr[:, 2], arr[:, 3], arr[:, 4] = (arr[:, 2] / 100), arr[:, 3] / 100, arr[:, 4] / 100
         arr = arr[(arr[:, 2] >= 0) & (arr[:, 2] < 2)]
+    # elif experiment_name == "schoolGymBayAncillaryCircle_germany_Wang":
+    #     arr[:, 2], arr[:, 3], arr[:, 4] = (arr[:, 2] / 100), arr[:, 3] / 100, arr[:, 4] / 100
+    #     arr[:, 2], arr[:, 3] = arr[:, 3] + 1.25, -arr[:, 2] + 1.85
     return arr
 
 
