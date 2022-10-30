@@ -7,7 +7,8 @@ import os
 import sys
 
 import numpy as np
-from helper import *
+from helper import read_trajectory_data, individual_velocity_top_view, voronoi_rho_top_view, \
+    individual_velocity_side_view, individual_headway_side_view, voronoi_rho_side_view
 
 
 def get_parser_args():
@@ -65,6 +66,7 @@ if __name__ == '__main__':
                 frame_data = frame_data[frame_data[:, 2].argsort()]
 
                 # B. Calculate pedestrian velocity
+                # TODO: calculation of clockwise experiment velocity?
                 if exp_type == 0:
                     velocity = individual_velocity_top_view(data, frame_data, delta_t, fr, frame_start,
                                                             frame_end, fps, c)
