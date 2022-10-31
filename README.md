@@ -83,7 +83,7 @@ pip3 install -r requirements.txt
 |[schoolWDGMainCircle_germany_Wang](https://doi.org/10.34735/ped.2014.2)|16.62|2.5|-|1.85|25|
 |[schoolGymBayMainCircle_germany_Wang](https://doi.org/10.34735/ped.2014.2)|16.62|2.5|-|1.85|25|
 |[age_china_Cao](https://doi.org/10.34735/ped.2017.1)|25.70|5|-|2.5|25|
-|[gender_palestine_Subaih](https://doi.org/10.34735/ped.2018.5)|-|17.3|3.14|-|25|
+|[gender_palestine_Subaih](https://doi.org/10.34735/ped.2018.5)|17.3|3.14|3.14|-|25|
 |[caserne_germany_Seyfried](https://doi.org/10.34735/ped.2006.1)|26.84|4|4|-|25
 |motivation_germany_lukowski|28.84|5|2|-|25|
 
