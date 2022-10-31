@@ -21,15 +21,15 @@ def get_parser_args():
     parser.add_argument(
         "-p",
         "--path",
-        help="Enter the path to the directory contains the trajectory files",
+        help="Enter the path to the directory containing the trajectory files",
     )
     parser.add_argument(
-        "-n", "--filename", help="Enter the trajectory file names", nargs="+"
+        "-n", "--filename", help="Enter the names of the trajectory files", nargs="+"
     )
     parser.add_argument(
         "-expn",
         "--expName",
-        help="Enter the experiment name: " + ", ".join(EXPERIMENTS.keys()),
+        help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
     )
     return parser.parse_args()
 
@@ -38,23 +38,24 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str):
     """
     apply the additional transformation which is specific for each experiment
 
-    :param arr: ndarray. Trajectory data
-    :param experiment_name: string. Experiments name
+    :param arr: trajectory data
+    :param experiment_name: experiment name
     :return:
     """
 
     e = EXPERIMENTS[experiment_name]
 
-    # todo: can we dispense with this if?
-    if experiment_name == "motivation_without_germany_Lukowski":
-        arr = np.append(arr, [[0] for _ in range(len(arr[:, 0]))], axis=1)
+    if (e.Min is not None) and (e.Max is not None):  # data inside measurement area (unique for each experiment)
+        arr = arr[((arr[:, 2] / e.unit) >= e.Min) & ((arr[:, 2] / e.unit) <= e.Max)]
 
-    if e.Min and e.Max:
-        arr = arr[(arr[:, 2] >= e.Min) & (arr[:, 2] <= e.Max)]
+    # transformation for x and y values (unique for each experiment)
+    x = arr[:, e.x_index].copy()
+    y = arr[:, e.y_index].copy()
 
-    arr[:, 2] = arr[:, e.x_index] / e.unit + e.shift_x
+    arr[:, 2] = (x / e.unit) + e.shift_x
+
     if e.y_index:
-        arr[:, 3] = e.inv_y * arr[:, e.y_index] / e.unit + e.shift_y
+        arr[:, 3] = ((e.inv_y * y) / e.unit) + e.shift_y
 
     return arr
 
@@ -69,12 +70,15 @@ if __name__ == "__main__":
         print("Transforming: %s/%s" % (path, file))
         file_name = os.path.splitext(file)[0]
 
+        # Some trajectory files miss the z column (i. e. motivation_germany_lukowski experiment)
         try:
             data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3, 4))
         except:
             data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3))
+            data = np.append(data, [[0] for _ in range(len(data[:, 0]))], axis=1)
 
         print(EXPERIMENTS[exp_name])
+        print(data)
         data = process_data(data, exp_name)
 
         header = "#id\tfr\tx\ty\tz"
