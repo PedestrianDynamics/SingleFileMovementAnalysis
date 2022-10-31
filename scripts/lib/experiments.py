@@ -8,11 +8,11 @@ class ExperimentData:
     Definition of experimental data
 
     - link: to the data
-    - For translations with shift_x and shift_y
+    - shift_x and shift_y: for translations vertically and horizontally
     - Unit: 100 if data are in cm. Otherwise 1
     - inv_y: scalar to reflect y-axis.
     - x_index and y_index are indices of the array
-    - Min and Max are boundary of the straight area
+    - Min and Max are boundary of the straight area (measurement area)
     """
 
     link: str
