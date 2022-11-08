@@ -1,6 +1,7 @@
 """
 ©Rudina Subaih
-Visualise the raw trajectories spatially (x-y) (oval trajectories)
+Visualise the "raw trajectories" spatially (x-y) (oval trajectories)
+Visualise the "straight trajectories" spatially (x-y)
 """
 import os
 import argparse
@@ -29,10 +30,15 @@ if __name__ == '__main__':
     fig = plt.figure(figsize=(7, 6))
 
     data = np.loadtxt(path, usecols=(0, 1, 2, 3, 4))
-    plt.plot(data[:, 2], data[:, 3], "bo", markersize=1)
+    plt.plot(data[:, 2], data[:, 3], "bo", markersize=0.3)
 
     # plt.xlim(0, 26.8496)
     # plt.ylim(-1, 1)
+
+    plt.vlines(5, -1, 1, colors="r", linestyles="dashed")
+    plt.vlines(12.85398, -1, 1, colors="r", linestyles="dashed")
+    plt.vlines(17.85398, -1, 1, colors="r", linestyles="dashed")
+
     plt.xlabel(r"$\rm x~[m]$")
     plt.ylabel(r"$\rm y~[m]$")
     plt.title(title)
