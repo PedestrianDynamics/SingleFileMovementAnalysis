@@ -34,8 +34,7 @@ pip3 install -r requirements.txt
 |[01_transformation_straight_traj.py](scripts/01_trajectory_data_preperation/01_transformation_straight_traj.py) | Transform oval to straight trajectory data according to [Ziemer](https://link.springer.com/chapter/10.1007/978-3-319-33482-0_12). |
 |[00_cal_vel_rho_headway.py](scripts/02_calculate_vel_rho_headway/00_cal_vel_rho_headway.py)|Calculate the individual velocity, headway, and 1D Voronoi density.|
 |[01_extract_steady_state_data.py](scripts/02_calculate_vel_rho_headway/01_extract_steady_state_data.py)|Extract and to save only the steady state data|
-|[00_plot_traj_raw.py](scripts/03_plotting/00_plot_traj_raw.py)|Plot the raw trajectory data|
-|[01_plot_traj_straight.py](scripts/03_plotting/01_plot_traj_straight.py)|Plot the straight trajectory data after [01_transformation_straight_traj.py](scripts/01_trajectory_data_preperation/01_transformation_straight_traj.py)|
+|[00_plot_trajectories.py](scripts/03_plotting/00_plot_trajectories.py)|Plot the raw trajectory data or Plot the straight trajectory data after|
 |[02_plot_timeseries_rho_v.py](scripts/03_plotting/02_plot_timeseries_rho_v.py)|Plot timeseries of density and velocity.|
 |[03_plot_rho_h_vel.py](scripts/03_plotting/03_plot_rho_h_vel.py)|Plot fundamental diagram (FD, rho-vel), and headway-velocity|
 |[04_plot_data_binning.py](scripts/03_plotting/04_plot_data_binning.py)|Plot bining data (rho-velocity) (headway-velocity)|
@@ -55,12 +54,12 @@ pip3 install -r requirements.txt
 ![schoolGymBay_h_vel](https://user-images.githubusercontent.com/4458692/197454455-d8ddcd18-165d-4185-9f73-7ff91f85109d.png)
 
 
-- The trajectories [00_plot_traj_raw.py](scripts/03_plotting/00_plot_traj_raw.py)
+- The raw trajectories [00_plot_traj_raw.py](scripts/03_plotting/00_plot_trajectories.py)
 
 ![GymBay_main_15_1](https://user-images.githubusercontent.com/4458692/197454570-d407cd02-980c-454a-b352-d7cda753de8a.png)
 
 
-- The trajectories after transformation [01_plot_traj_straight.py](scripts/03_plotting/01_plot_traj_straight.py)
+- The trajectories after transformation [00_plot_traj_raw.py](scripts/03_plotting/00_plot_trajectories.py)
 
 ![GymBay_main_15_1_transformation_additional_straight_traj](https://user-images.githubusercontent.com/4458692/197454619-3804368f-82b1-4eaa-a725-42eb95e2e1b2.png)
 
