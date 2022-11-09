@@ -35,9 +35,9 @@ if __name__ == '__main__':
     # plt.xlim(0, 26.8496)
     # plt.ylim(-1, 1)
 
-    plt.vlines(5, -1, 1, colors="r", linestyles="dashed")
-    plt.vlines(12.85398, -1, 1, colors="r", linestyles="dashed")
-    plt.vlines(17.85398, -1, 1, colors="r", linestyles="dashed")
+    # plt.vlines(5, -1, 1, colors="r", linestyles="dashed")
+    # plt.vlines(12.85398, -1, 1, colors="r", linestyles="dashed")
+    # plt.vlines(17.85398, -1, 1, colors="r", linestyles="dashed")
 
     plt.xlabel(r"$\rm x~[m]$")
     plt.ylabel(r"$\rm y~[m]$")
