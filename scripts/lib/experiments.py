@@ -87,7 +87,7 @@ EXPERIMENTS = {
     ),
     "genderCroMa_germany_paetzke": ExperimentData(
         link="empty",
-        shift_x=4.85,
+        shift_x=4.15,
         shift_y=-1.5,
         inv_x=-1,
         inv_y=1,
