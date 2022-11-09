@@ -19,6 +19,7 @@ class ExperimentData:
     shift_x: float = 0
     shift_y: float = 0
     unit: float = 1
+    inv_x: int = 1
     inv_y: int = 1
     x_index: int = 2
     y_index: Optional[int] = 3
@@ -86,8 +87,9 @@ EXPERIMENTS = {
     ),
     "genderCroMa_germany_paetzke": ExperimentData(
         link="empty",
-        shift_x=-1.85,
+        shift_x=4.85,
         shift_y=-1.5,
+        inv_x=-1,
         inv_y=1,
         x_index=3,
         y_index=2,
