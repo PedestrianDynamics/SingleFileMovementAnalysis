@@ -52,7 +52,7 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str):
     x = arr[:, e.x_index].copy()
     y = arr[:, e.y_index].copy()
 
-    arr[:, 2] = (x / e.unit) + e.shift_x
+    arr[:, 2] = (e.inv_x * x / e.unit) + e.shift_x
 
     if e.y_index:
         arr[:, 3] = ((e.inv_y * y) / e.unit) + e.shift_y
