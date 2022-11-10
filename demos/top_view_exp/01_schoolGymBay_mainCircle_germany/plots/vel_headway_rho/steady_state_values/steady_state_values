@@ -1,0 +1,6 @@
+# decided manually by the analyzer: look to the figure "/home/rudina/PycharmProjects/SingleFileMovementAnalysis/demos/top_view_exp/01_schoolGymBay_mainCircle_germany/plots/vel_headway_rho/steady_state_values/
+timeseries_rho_GymBay_main_15_1_RY_HTR_VTU_straight_traj_vel_h_rho.pdf" and detect what frames of the steady state
+
+GymBay_main_15_1 = 700, 1500
+
+
