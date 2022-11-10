@@ -1,6 +1,5 @@
 demos_draft/
 scripts_draft/
-demos/
 .*
 !.gitignore
 venv
