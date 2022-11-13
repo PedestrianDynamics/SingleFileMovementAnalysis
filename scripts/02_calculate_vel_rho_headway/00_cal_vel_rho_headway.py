@@ -9,6 +9,7 @@ import sys
 import numpy as np
 from lib.helper import read_trajectory_data, individual_velocity_top_view, voronoi_rho_top_view, \
     individual_velocity_side_view, individual_headway_side_view, voronoi_rho_side_view
+from lib.experiments import EXPERIMENTS
 
 
 def get_parser_args():
@@ -16,30 +17,37 @@ def get_parser_args():
     Arguments required from user to input
     :return: parser of arguments
     """
-    parser = argparse.ArgumentParser(description='Calculate the movement quantities velocity, rho, and headway')
-    parser.add_argument("-p", "--path", help='Enter the path of directory that contain trajectory (straight '
-                                             'transformed trajectory) files')
-    parser.add_argument('-fr', "--framePerSecond", type=float, default=16, help="Enter the fps the camera "
-                                                                                "recorded (default=16)")
-    parser.add_argument('-deltat', "--deltaTime", type=float, default=0.4, help="Enter the time constant to "
-                                                                                "calculate the velocity (default=0.4)")
-    parser.add_argument('-c', "--circumference", type=float, default=26.8496, help="Enter setup circumference "
-                                                                                   "default=26.8496")
-    parser.add_argument("-et", "--expType", type=float, default=0, help='Enter the type of the experiment:'
-                                                                        '0 => top_view, 1 => side_view (default=0)')
-    parser.add_argument("-n", "--expName", help='Enter the name of the experiment')
+    parser = argparse.ArgumentParser(description="Calculate the movement quantities velocity, rho, and headway")
+    parser.add_argument(
+        "-p",
+        "--path",
+        help="Enter the path of directory that contain trajectory (straight transformed trajectory) files"
+    )
+    parser.add_argument(
+        "-delta",
+        "--deltaTime",
+        type=float,
+        default=0.4,
+        help="Enter the time constant to calculate the velocity (default=0.4)")
+    parser.add_argument(
+        "-expn",
+        "--expName",
+        help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
+    )
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = get_parser_args()
     path = args.path
-    fps = args.framePerSecond
     delta_t = args.deltaTime
-    c = args.circumference
-    exp = args.expName
-    exp_type = args.expType
+    exp_name = args.expName
     sys.path.append(path)
+
+    e = EXPERIMENTS[exp_name]
+    fps = e.fps
+    c = e.circumference
+    camera_capture = e.camera_capture
 
     files = glob.glob("%s/*.txt" % path)
 
@@ -67,7 +75,7 @@ if __name__ == '__main__':
 
                 # B. Calculate pedestrian velocity
                 # TODO: calculation of clockwise experiment velocity?
-                if exp_type == 0:
+                if camera_capture == 0:
                     velocity = individual_velocity_top_view(data, frame_data, delta_t, fr, frame_start,
                                                             frame_end, fps, c)
                     # C. Calculate pedestrians' headway
@@ -106,5 +114,5 @@ if __name__ == '__main__':
         result = result[~np.isnan(result).any(axis=1)]
 
         header = "#id\tfr\tx\ty\tz\tvelocity\theadway\trho"
-        np.savetxt(path, result, fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f", delimiter='\t',
-                   header=header, comments='', newline='\r\n')
+        np.savetxt(path, result, fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f", delimiter="\t", header=header,
+                   comments="", newline="\r\n")

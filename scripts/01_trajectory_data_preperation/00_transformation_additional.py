@@ -14,17 +14,19 @@ from lib.experiments import EXPERIMENTS
 def get_parser_args():
     """
     Required arguments from the user to input
-
     :return: parser of arguments
     """
     parser = argparse.ArgumentParser(description="transform the trajectories (x, y)")
     parser.add_argument(
         "-p",
         "--path",
-        help="Enter the path to the directory containing the trajectory files",
+        help="Enter the path to the directory containing the trajectory files"
     )
     parser.add_argument(
-        "-n", "--filename", help="Enter the names of the trajectory files", nargs="+"
+        "-n",
+        "--filename",
+        help="Enter the names of the trajectory files",
+        nargs="+"
     )
     parser.add_argument(
         "-expn",
@@ -37,7 +39,6 @@ def get_parser_args():
 def process_data(arr: npt.NDArray[np.float64], experiment_name: str):
     """
     apply the additional transformation which is specific for each experiment
-
     :param arr: trajectory data
     :param experiment_name: experiment name
     :return:
@@ -89,5 +90,5 @@ if __name__ == "__main__":
             header=header,
             comments="",
             newline="\r\n",
-            fmt="%d\t%d\t%.4f\t%.4f\t%.4f",
+            fmt="%d\t%d\t%.4f\t%.4f\t%.4f"
         )

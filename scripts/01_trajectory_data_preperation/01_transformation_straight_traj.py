@@ -6,6 +6,7 @@ some modifications
 import numpy as np
 import os
 from lib.helper import transformation_coord
+from lib.experiments import EXPERIMENTS
 import time
 import argparse
 
@@ -15,23 +16,29 @@ def get_parser_args():
     Arguments required from user to input
     :return: parser of arguments
     """
-    parser = argparse.ArgumentParser(description='transform 00_raw trajectories to straight trajectories (Ziemer2016)')
-    parser.add_argument("-p", "--path", help='Enter the path of the trajectory file')
-    parser.add_argument("-l", "--length", type=float, default=2.5, help='Enter the length (meter) of the straight part '
-                                                                        'of the oval set-up (default=2.5)')
-    parser.add_argument("-r", "--radius", type=float, default=1.85, help='Enter the radius (meter) of the corner in '
-                                                                         'oval set-up (measured from the center of '
-                                                                         'the corner circle to the middle of the '
-                                                                         'corridor)(default=1.85)')
+    parser = argparse.ArgumentParser(description="transform 00_raw trajectories to straight trajectories (Ziemer2016)")
+    parser.add_argument(
+        "-p",
+        "--path",
+        help="Enter the path of the trajectory file"
+    )
+    parser.add_argument(
+        "-expn",
+        "--expName",
+        help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
+    )
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     arg = get_parser_args()
     path = arg.path
     fig_name = os.path.basename(os.path.splitext(path)[0])
-    length = arg.length
-    r = arg.radius
+    exp_name = arg.expName
+
+    e = EXPERIMENTS[exp_name]
+    length = e.length
+    r = e.radius
 
     # record start time
     start = time.time()
@@ -44,8 +51,13 @@ if __name__ == '__main__':
         data_new = np.append(data_new, np.array([[row[0], row[1], x_trans, y_trans, row[4]]]), axis=0)
 
     header = "#id\tfr\tx\ty\tz"
-    np.savetxt("./%s_straight_traj.txt" % fig_name, data_new, delimiter='\t', header=header, comments='',
-               newline='\r\n', fmt='%d\t%d\t%.4f\t%.4f\t%.4f')
+    np.savetxt("./%s_straight_traj.txt" % fig_name,
+               data_new,
+               delimiter="\t",
+               header=header,
+               comments="",
+               newline="\r\n",
+               fmt="%d\t%d\t%.4f\t%.4f\t%.4f")
 
     # record end time
     end = time.time()
