@@ -25,14 +25,14 @@ def get_parser_args():
         nargs="+"
     )
     parser.add_argument(
-        "-st",
+        "-s",
         "--start",
         type=float,
         help="Enter the start frame of the steady state",
         nargs="+"
     )
     parser.add_argument(
-        "-en",
+        "-e",
         "--end",
         type=float,
         help="Enter the end frame of the steady state",
