@@ -6,6 +6,7 @@ import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from experiments import EXPERIMENTS
 
 
 def get_parser_args():
@@ -20,11 +21,9 @@ def get_parser_args():
         help="Enter the path of trajectory file (straight periodic trajectories)"
     )
     parser.add_argument(
-        "-f",
-        "--fps",
-        default="25",
-        type=int,
-        help="Enter the frame rate of the videos"
+        "-expn",
+        "--expName",
+        help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
     )
     parser.add_argument(
         "-t",
@@ -42,9 +41,12 @@ def get_parser_args():
 if __name__ == "__main__":
     args = get_parser_args()
     path_file = args.path
+    exp_name = args.expName
     title = args.title
-    fps = args.fps
     path_output = args.pathOutput
+
+    e = EXPERIMENTS[exp_name]
+    fps = e.fps
 
     file_name = os.path.splitext(path_file)[0]
 
