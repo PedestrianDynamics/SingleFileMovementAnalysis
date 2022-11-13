@@ -7,10 +7,10 @@ import numpy as np
 from scipy.ndimage.interpolation import shift
 
 
-def transformation_coord(x, y, l, r):
+def transformation_coord(x, y, length, r):
     """
     transform coordinates to straight periodic trajectories (Ziemer2016)
-    :param l: float. length of the oval corridor (circumference) in meter
+    :param length: float. length of the oval corridor (circumference) in meter
     :param r: flowt. Radius
     :param x: float. a-coordinate
     :param y: float. y-coordinate
@@ -21,18 +21,18 @@ def transformation_coord(x, y, l, r):
 
     if x < 0:
         arccos_val = (r - y) / math.sqrt((x ** 2) + ((y - r) ** 2))
-        x_trans = (2 * l) + (r * math.pi) + (r * np.arccos(-arccos_val))
+        x_trans = (2 * length) + (r * math.pi) + (r * np.arccos(-arccos_val))
         y_trans = math.sqrt((x ** 2) + ((y - r) ** 2)) - r
-    elif 0 <= x <= l:
+    elif 0 <= x <= length:
         y_trans = math.sqrt(((y - r) ** 2)) - r
         if y < r:
             x_trans = x
         elif y >= r:
-            x_trans = (2 * l) + (r * math.pi) - x
-    elif x > l:
-        arccos_val = (r - y) / math.sqrt(((x - l) ** 2) + ((y - r) ** 2))
-        x_trans = l + (r * np.arccos(arccos_val))
-        y_trans = math.sqrt(((x - l) ** 2) + ((y - r) ** 2)) - r
+            x_trans = (2 * length) + (r * math.pi) - x
+    elif x > length:
+        arccos_val = (r - y) / math.sqrt(((x - length) ** 2) + ((y - r) ** 2))
+        x_trans = length + (r * np.arccos(arccos_val))
+        y_trans = math.sqrt(((x - length) ** 2) + ((y - r) ** 2)) - r
 
     return x_trans, y_trans
 
@@ -53,15 +53,13 @@ def individual_velocity_top_view(data, frame_data, delta_t, frame_current, frame
     :param data: ndarray. Trajectory dataset
     :param frame_data: the data of a specific frame
     :param delta_t: short time constant (to smooth the traj. in order to avoid fluctuations of ped. stepping)
-    :param frame_current: id of the current camera frame
-    :param frame_start: id of the starting camera frame
-    :param frame_end: id of the ending camera frame
+    :param frame_current: ped_id of the current camera frame
+    :param frame_start: ped_id of the starting camera frame
+    :param frame_end: ped_id of the ending camera frame
     :param fps: camera frame per second
     :param c: circumference of the oval corridor
     :return: numpy array contain the velocity values
     """
-    velocity = 0
-
     # 1. Get the data of the frame previous delta frame and the frame after delta frame
     data_frame_prev = data[data[:, 1] == (frame_current - int(delta_t * fps) / 2)]
     data_frame_next = data[data[:, 1] == (frame_current + int(delta_t * fps) / 2)]
@@ -80,11 +78,11 @@ def individual_velocity_top_view(data, frame_data, delta_t, frame_current, frame
     velocity = np.zeros((len(frame_data[:, 0])))
     indx = 0
     ped_ids = frame_data[:, 0]
-    for id in ped_ids:
-        list = data_frame_next[data_frame_next[:, 0] == id]
-        if list.size != 0:
-            velocity[indx] = (data_frame_next[data_frame_next[:, 0] == id][0][2] -
-                              data_frame_prev[data_frame_prev[:, 0] == id][0][2]) / delta_t
+    for ped_id in ped_ids:
+        ped_data_frame = data_frame_next[data_frame_next[:, 0] == ped_id]
+        if ped_data_frame.size != 0:
+            velocity[indx] = (data_frame_next[data_frame_next[:, 0] == ped_id][0][2] -
+                              data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]) / delta_t
             indx += 1
         else:
             # TODO: indx += 1 ?!
@@ -116,11 +114,8 @@ def individual_velocity_side_view(data, frame_data, delta_t, frame_current, fps)
     :param data: ndarray. Trajectory dataset
     :param frame_data: the data of a specific frame
     :param delta_t: short time constant (to smooth the traj. in order to avoid fluctuations of ped. stepping)
-    :param frame_current: id of the current camera frame
-    :param frame_start: id of the starting camera frame
-    :param frame_end: id of the ending camera frame
+    :param frame_current: ped_id of the current camera frame
     :param fps: camera frame per second
-    :param c: circumference of the oval corridor
     :return: numpy array contain the velocity values
     """
     # order the pedestrians inside the current data frame by the position (0 to 3.14)
@@ -135,27 +130,27 @@ def individual_velocity_side_view(data, frame_data, delta_t, frame_current, fps)
     data_frame_next = data[data[:, 1] == (frame_current + int(delta_t * fps) / 2)]
 
     # 2. iterate over ped. inside the current frame one by one to calculate the velocity
-    for id in ped_ids:
-        ped_data_prev = data_frame_prev[data_frame_prev[:, 0] == id]
-        ped_data_next = data_frame_next[data_frame_next[:, 0] == id]
+    for ped_id in ped_ids:
+        ped_data_prev = data_frame_prev[data_frame_prev[:, 0] == ped_id]
+        ped_data_next = data_frame_next[data_frame_next[:, 0] == ped_id]
 
         # in case no prev. or next frame, take the value of x of minimum frame and maximum frame of pedestrian
         # respectively
-        ped_data = data[data[:, 0] == id]
+        ped_data = data[data[:, 0] == ped_id]
         ped_data_min = min(ped_data[:, 2])
         ped_data_max = max(ped_data[:, 2])
 
         if (ped_data_prev.size != 0) and (ped_data_next.size != 0):  # there is frame previous and next
-            velocity[indx] = (data_frame_next[data_frame_next[:, 0] == id][0][2] -
-                              data_frame_prev[data_frame_prev[:, 0] == id][0][2]) / delta_t
+            velocity[indx] = (data_frame_next[data_frame_next[:, 0] == ped_id][0][2] -
+                              data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]) / delta_t
             indx += 1
         elif (ped_data_prev.size != 0) and (ped_data_next.size == 0):  # there is frame previous
-            velocity[indx] = (frame_data[frame_data[:, 0] == id][0][2] -
-                              data_frame_prev[data_frame_prev[:, 0] == id][0][2]) / delta_t
+            velocity[indx] = (frame_data[frame_data[:, 0] == ped_id][0][2] -
+                              data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]) / delta_t
             indx += 1
         elif (ped_data_prev.size == 0) and (ped_data_next.size != 0):  # there is frame next
-            velocity[indx] = (data_frame_next[data_frame_next[:, 0] == id][0][2] -
-                              frame_data[frame_data[:, 0] == id][0][2]) / delta_t
+            velocity[indx] = (data_frame_next[data_frame_next[:, 0] == ped_id][0][2] -
+                              frame_data[frame_data[:, 0] == ped_id][0][2]) / delta_t
             indx += 1
         elif (ped_data_prev.size == 0) and (ped_data_next.size != 0):  # there is no frame previous and next
             velocity[indx] = (ped_data_max - ped_data_min) / delta_t
