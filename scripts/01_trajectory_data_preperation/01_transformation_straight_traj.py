@@ -5,8 +5,8 @@ some modifications
 """
 import numpy as np
 import os
-from lib.helper import transformation_coord
-from lib.experiments import EXPERIMENTS
+from helper import transformation_coord
+from experiments import EXPERIMENTS
 import time
 import argparse
 

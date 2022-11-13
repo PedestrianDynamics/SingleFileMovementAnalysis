@@ -8,7 +8,7 @@ import os
 
 import numpy as np
 import numpy.typing as npt
-from lib.experiments import EXPERIMENTS
+from experiments import EXPERIMENTS
 
 
 def get_parser_args():

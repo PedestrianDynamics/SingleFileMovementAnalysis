@@ -7,9 +7,9 @@ import os
 import sys
 
 import numpy as np
-from lib.helper import read_trajectory_data, individual_velocity_top_view, voronoi_rho_top_view, \
+from helper import read_trajectory_data, individual_velocity_top_view, voronoi_rho_top_view, \
     individual_velocity_side_view, individual_headway_side_view, voronoi_rho_side_view
-from lib.experiments import EXPERIMENTS
+from experiments import EXPERIMENTS
 
 
 def get_parser_args():
