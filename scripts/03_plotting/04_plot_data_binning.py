@@ -11,13 +11,32 @@ def get_parser_args():
     Arguments required from user to input
     :return: parser of arguments
     """
-    parser = argparse.ArgumentParser(description='Plot the data binning for scatter data (headway-velocity) and '
-                                                 '(rho-velocity)')
-    parser.add_argument("-ps", "--pathSource", default="./", help='Enter the path of rho_vel_h data files', nargs='+')
-    parser.add_argument("-lb", "--label", default="./", help='Enter the labels` texts of the data (plot legend)'
-                        , nargs='+')
-    parser.add_argument("-f", "--figName", help='Enter the name of figure file to save')
-    parser.add_argument("-t", "--title", help='Enter a title for the figure')
+    parser = argparse.ArgumentParser(description="Plot the data binning for scatter data (headway-velocity) and "
+                                                 "(rho-velocity)")
+    parser.add_argument(
+        "-ps",
+        "--pathSource",
+        default="./",
+        help="Enter the path of rho_vel_h data files",
+        nargs="+"
+    )
+    parser.add_argument(
+        "-lb",
+        "--label",
+        default="./",
+        help="Enter the labels` texts of the data (plot legend)",
+        nargs="+"
+    )
+    parser.add_argument(
+        "-f",
+        "--figName",
+        help="Enter the name of figure file to save"
+    )
+    parser.add_argument(
+        "-t",
+        "--title",
+        help="Enter a title for the figure"
+    )
     return parser.parse_args()
 
 
@@ -55,10 +74,10 @@ def binning_data(x_values, y_values, lb, ax):
             x_std.append(np.std(rho))
 
     ax.errorbar(x_mean, y_mean, xerr=x_std, yerr=y_std, label=lb,
-                markerfacecolor='None')
+                markerfacecolor="None")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     arg = get_parser_args()
     path_source = arg.pathSource
     fig_name = arg.figName

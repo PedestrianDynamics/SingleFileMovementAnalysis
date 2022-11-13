@@ -1,6 +1,6 @@
 """
 ©Rudina Subaih
-to save only the steady state data
+to save only the steady-state data
 """
 import argparse
 
@@ -12,15 +12,36 @@ def get_parser_args():
     Arguments required from user to input
     :return: parser of arguments
     """
-    parser = argparse.ArgumentParser(description='Extraxt steady state data and save it inside a file')
-    parser.add_argument("-p", "--path", help='Enter the path of rho_v files directory')
-    parser.add_argument("-n", "--filename", help='Enter the files names of rho_v files', nargs="+")
-    parser.add_argument("-st", "--start", type=float, help="Enter the start frame of the steady state", nargs='+')
-    parser.add_argument("-en", "--end", type=float, help="Enter the end frame of the steady state", nargs='+')
+    parser = argparse.ArgumentParser(description="Extract steady-state data and save it inside a file")
+    parser.add_argument(
+        "-p",
+        "--path",
+        help="Enter the path of rho_v files directory"
+    )
+    parser.add_argument(
+        "-n",
+        "--filename",
+        help="Enter the files names of rho_v files",
+        nargs="+"
+    )
+    parser.add_argument(
+        "-st",
+        "--start",
+        type=float,
+        help="Enter the start frame of the steady state",
+        nargs="+"
+    )
+    parser.add_argument(
+        "-en",
+        "--end",
+        type=float,
+        help="Enter the end frame of the steady state",
+        nargs="+"
+    )
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = get_parser_args()
     path = args.path  # The path of the rho_v directory
     files = args.filename  # Names of the rho_v files
@@ -30,7 +51,7 @@ if __name__ == '__main__':
     for file, st, en in zip(files, starts, ends):
         n = ["id", "fr", "x", "y", "z", "velocity", "headway", "rho"]
         header = "#id\tfr\tx\ty\tz\tvelocity\theadway\trho"
-        fmt = '%d\t%d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f'
+        fmt = "%d\t%d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
 
         data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3, 4, 5, 6, 7))
 
@@ -38,4 +59,4 @@ if __name__ == '__main__':
         rho_v = rho_v[rho_v[:, 1] < en]
 
         spath = "%s/%s_steadystate.txt" % (path, file)
-        np.savetxt(spath, rho_v, delimiter='\t', header=header, comments='', newline='\r\n', fmt=fmt)
+        np.savetxt(spath, rho_v, delimiter="\t", header=header, comments="", newline="\r\n", fmt=fmt)

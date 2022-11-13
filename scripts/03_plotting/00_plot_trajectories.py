@@ -15,13 +15,22 @@ def get_parser_args():
     Arguments required from user to input
     :return: parser of arguments
     """
-    parser = argparse.ArgumentParser(description='Plot the trajectories of pedestrians x-y')
-    parser.add_argument("-p", "--path", default="./", help='Enter the path of the trajectory file')
-    parser.add_argument("-t", "--title", help='Enter a title for the figure')
+    parser = argparse.ArgumentParser(description="Plot the trajectories of pedestrians x-y")
+    parser.add_argument(
+        "-p",
+        "--path",
+        default="./",
+        help="Enter the path of the trajectory file"
+    )
+    parser.add_argument(
+        "-t",
+        "--title",
+        help="Enter a title for the figure"
+    )
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     arg = get_parser_args()
     path = arg.path
     title = arg.title

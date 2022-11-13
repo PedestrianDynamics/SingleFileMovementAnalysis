@@ -15,17 +15,39 @@ def get_parser_args():
     Arguments required from user to input
     :return: parser of arguments
     """
-    parser = argparse.ArgumentParser(description='Plot FD (rho-vel) and headway-velocity relation')
-    parser.add_argument("-p", "--path", help='Enter the path of vel_h_rho files (steady-state) directory')
-    parser.add_argument("-n", "--filename", help='Enter the files names of vel_h_rho files (steady-state)', nargs="+")
-    parser.add_argument("-t", "--title", help='Enter the title for the figure')
-    parser.add_argument("-f", "--figName", help='Enter the name of figure file to save')
-    parser.add_argument("-lb", "--label", default=" ", help='Enter the labels` texts of the data (plot legend)'
-                        , nargs='+')
+    parser = argparse.ArgumentParser(description="Plot FD (rho-vel) and headway-velocity relation")
+    parser.add_argument(
+        "-p",
+        "--path",
+        help="Enter the path of vel_h_rho files (steady-state) directory"
+    )
+    parser.add_argument(
+        "-n",
+        "--filename",
+        help="Enter the files names of vel_h_rho files (steady-state)",
+        nargs="+"
+    )
+    parser.add_argument(
+        "-t",
+        "--title",
+        help="Enter the title for the figure"
+    )
+    parser.add_argument(
+        "-f",
+        "--figName",
+        help="Enter the name of figure file to save"
+    )
+    parser.add_argument(
+        "-lb",
+        "--label",
+        default=" ",
+        help="Enter the labels` texts of the data (plot legend)",
+        nargs="+"
+    )
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = get_parser_args()
     path = args.path
     files = args.filename
@@ -44,8 +66,8 @@ if __name__ == '__main__':
                            names=["id", "fr", "x", "y", "z", "vel", "headway", "rho"])
 
         print("Plotting: %s%s" % (path, file))
-        ax1.scatter(data['headway'], data['vel'], label=label, alpha=0.5)
-        ax2.scatter(data['rho'], data['vel'], label=label, alpha=0.5)
+        ax1.scatter(data["headway"], data["vel"], label=label, alpha=0.5)
+        ax2.scatter(data["rho"], data["vel"], label=label, alpha=0.5)
 
     # ax1.set_xlim(-0.5, 2.5)
     # ax1.set_ylim(-0.6, 0.8)

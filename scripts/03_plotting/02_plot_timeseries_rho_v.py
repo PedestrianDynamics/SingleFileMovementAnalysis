@@ -14,15 +14,19 @@ def get_parser_args():
     Arguments required from user to input
     :return: parser of arguments
     """
-    parser = argparse.ArgumentParser(description='Plot the change of velocity and density over time to find the steady '
-                                                 'state')
-    parser.add_argument("-p", "--pathfile", default="./", help='Enter the path of the vel_h_rho file (default="./")')
+    parser = argparse.ArgumentParser(description="Plot the change of velocity and density over time to find the "
+                                                 "steady state")
+    parser.add_argument(
+        "-p",
+        "--path",
+        default="./",
+        help="Enter the path of the vel_h_rho file (default='./')")
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = get_parser_args()
-    path = args.pathfile
+    path = args.path
 
     fig_name = os.path.basename(os.path.splitext(path)[0])
     data = pd.read_csv(path, comment="#", sep="\t", names=["ID", "FR", "x", "y", "z", "vel", "headway", "density"])
