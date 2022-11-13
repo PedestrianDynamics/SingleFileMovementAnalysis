@@ -27,6 +27,12 @@ def get_parser_args():
         "--expName",
         help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
     )
+    parser.add_argument(
+        "-po",
+        "--pathOutput",
+        default="",
+        help="Enter the path to save the output"
+    )
     return parser.parse_args()
 
 
@@ -35,6 +41,7 @@ if __name__ == "__main__":
     path = arg.path
     fig_name = os.path.basename(os.path.splitext(path)[0])
     exp_name = arg.expName
+    path_output = arg.pathOutput
 
     e = EXPERIMENTS[exp_name]
     length = e.length
@@ -51,7 +58,7 @@ if __name__ == "__main__":
         data_new = np.append(data_new, np.array([[row[0], row[1], x_trans, y_trans, row[4]]]), axis=0)
 
     header = "#id\tfr\tx\ty\tz"
-    np.savetxt("./%s_straight_traj.txt" % fig_name,
+    np.savetxt("%s/%s_straight_traj.txt" % (path_output, fig_name),
                data_new,
                delimiter="\t",
                header=header,
