@@ -88,4 +88,3 @@ if __name__ == "__main__":
     fig2.savefig("./%s_rho_vel.png" % fig_name)
     fig2.savefig("./%s_rho_vel.pdf" % fig_name)
     plt.close(fig2)
-
