@@ -37,7 +37,6 @@ def get_parser_args():
     parser.add_argument(
         "-po",
         "--pathOutput",
-        default="",
         help="Enter the path to save the output"
     )
     return parser.parse_args()

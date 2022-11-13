@@ -16,14 +16,12 @@ def get_parser_args():
     parser.add_argument(
         "-p",
         "--path",
-        default="./",
         help="Enter the path of rho_vel_h data files",
         nargs="+"
     )
     parser.add_argument(
         "-lb",
         "--label",
-        default="./",
         help="Enter the labels` texts of the data (plot legend)",
         nargs="+"
     )
@@ -40,7 +38,6 @@ def get_parser_args():
     parser.add_argument(
         "-po",
         "--pathOutput",
-        default="",
         help="Enter the path to save the output"
     )
     return parser.parse_args()
