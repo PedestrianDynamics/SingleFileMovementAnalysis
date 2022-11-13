@@ -20,7 +20,7 @@ def get_parser_args():
     )
     parser.add_argument(
         "-n",
-        "--filename",
+        "--fileName",
         help="Enter the files names of rho_v files",
         nargs="+"
     )
@@ -44,7 +44,7 @@ def get_parser_args():
 if __name__ == "__main__":
     args = get_parser_args()
     path = args.path  # The path of the rho_v directory
-    files = args.filename  # Names of the rho_v files
+    files = args.fileName  # Names of the rho_v files
     starts = args.start  # start frame of the steady state for each file
     ends = args.end  # End frame of the steady state for each file
 

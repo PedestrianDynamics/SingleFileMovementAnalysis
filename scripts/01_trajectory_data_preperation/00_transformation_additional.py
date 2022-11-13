@@ -24,7 +24,7 @@ def get_parser_args():
     )
     parser.add_argument(
         "-n",
-        "--filename",
+        "--fileName",
         help="Enter the names of the trajectory files",
         nargs="+"
     )
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     arg = get_parser_args()
     path = arg.path
     exp_name = arg.expName
-    files = arg.filename
+    files = arg.fileName
 
     for file in files:
         print("Transforming: %s/%s" % (path, file))
@@ -78,8 +78,6 @@ if __name__ == "__main__":
             data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3))
             data = np.append(data, [[0] for _ in range(len(data[:, 0]))], axis=1)
 
-        print(EXPERIMENTS[exp_name])
-        print(data)
         data = process_data(data, exp_name)
 
         header = "#id\tfr\tx\ty\tz"

@@ -23,7 +23,7 @@ def get_parser_args():
     )
     parser.add_argument(
         "-n",
-        "--filename",
+        "--fileName",
         help="Enter the files names of vel_h_rho files (steady-state)",
         nargs="+"
     )
@@ -50,7 +50,7 @@ def get_parser_args():
 if __name__ == "__main__":
     args = get_parser_args()
     path = args.path
-    files = args.filename
+    files = args.fileName
     title = args.title
     fig_name = args.figName
     labels = args.label

@@ -16,7 +16,7 @@ def get_parser_args():
     parser = argparse.ArgumentParser(description="Plot the x-t diagram (trajectories)")
     parser.add_argument(
         "-p",
-        "--pathFile",
+        "--path",
         default="./",
         help="Enter the path of trajectory file (straight periodic trajectories)"
     )
@@ -37,7 +37,7 @@ def get_parser_args():
 
 if __name__ == "__main__":
     args = get_parser_args()
-    path_file = args.pathFile
+    path_file = args.path
     title = args.title
     fps = args.fps
     file_name = os.path.splitext(path_file)[0]

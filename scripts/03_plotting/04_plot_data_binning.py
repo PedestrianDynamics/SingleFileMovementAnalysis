@@ -14,8 +14,8 @@ def get_parser_args():
     parser = argparse.ArgumentParser(description="Plot the data binning for scatter data (headway-velocity) and "
                                                  "(rho-velocity)")
     parser.add_argument(
-        "-ps",
-        "--pathSource",
+        "-p",
+        "--path",
         default="./",
         help="Enter the path of rho_vel_h data files",
         nargs="+"
@@ -79,7 +79,7 @@ def binning_data(x_values, y_values, lb, ax):
 
 if __name__ == "__main__":
     arg = get_parser_args()
-    path_source = arg.pathSource
+    path_source = arg.path
     fig_name = arg.figName
     label = arg.label
     title = arg.title
