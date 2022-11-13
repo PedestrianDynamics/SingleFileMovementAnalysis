@@ -33,6 +33,12 @@ def get_parser_args():
         "--expName",
         help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
     )
+    parser.add_argument(
+        "-po",
+        "--pathOutput",
+        default="",
+        help="Enter the path to save the output"
+    )
     return parser.parse_args()
 
 
@@ -66,6 +72,7 @@ if __name__ == "__main__":
     path = arg.path
     exp_name = arg.expName
     files = arg.fileName
+    path_output = arg.pathOutput
 
     for file in files:
         print("Transforming: %s/%s" % (path, file))
@@ -82,7 +89,7 @@ if __name__ == "__main__":
 
         header = "#id\tfr\tx\ty\tz"
         np.savetxt(
-            "./%s_transformation_additional.txt" % file_name,
+            "%s/%s_transformation_additional.txt" % (path_output, file_name),
             data,
             delimiter="\t",
             header=header,

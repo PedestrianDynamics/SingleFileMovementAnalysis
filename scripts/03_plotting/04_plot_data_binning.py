@@ -37,6 +37,12 @@ def get_parser_args():
         "--title",
         help="Enter a title for the figure"
     )
+    parser.add_argument(
+        "-po",
+        "--pathOutput",
+        default="",
+        help="Enter the path to save the output"
+    )
     return parser.parse_args()
 
 
@@ -83,6 +89,7 @@ if __name__ == "__main__":
     fig_name = arg.figName
     label = arg.label
     title = arg.title
+    path_output = arg.pathOutput
 
     fig1 = plt.figure()
     ax1 = fig1.add_subplot(111)
@@ -104,8 +111,8 @@ if __name__ == "__main__":
     # ax1.set_xlim(0, 7)
     # ax1.set_ylim(-0.5, 2)
 
-    fig1.savefig("./%s_binning_h_vel.png" % fig_name)
-    fig1.savefig("./%s_binning_h_vel.pdf" % fig_name)
+    fig1.savefig("%s/%s_binning_h_vel.png" % (path_output, fig_name))
+    fig1.savefig("%s/%s_binning_h_vel.pdf" % (path_output, fig_name))
     plt.close(fig1)
 
     # 2. Headway-velocity figure
@@ -116,6 +123,6 @@ if __name__ == "__main__":
     # ax2.set_xlim(0, 5.5)
     # ax2.set_ylim(-0.5, 2)
 
-    fig2.savefig("./%s_binning_rho_vel.png" % fig_name)
-    fig2.savefig("./%s_binning_rho_vel.pdf" % fig_name)
+    fig2.savefig("%s/%s_binning_rho_vel.png" % (path_output, fig_name))
+    fig2.savefig("%s/%s_binning_rho_vel.pdf" % (path_output, fig_name))
     plt.close(fig2)

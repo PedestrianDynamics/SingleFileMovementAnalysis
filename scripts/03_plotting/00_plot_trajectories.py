@@ -27,6 +27,12 @@ def get_parser_args():
         "--title",
         help="Enter a title for the figure"
     )
+    parser.add_argument(
+        "-po",
+        "--pathOutput",
+        default="",
+        help="Enter the path to save the output"
+    )
     return parser.parse_args()
 
 
@@ -34,6 +40,7 @@ if __name__ == "__main__":
     arg = get_parser_args()
     path = arg.path
     title = arg.title
+    path_output = arg.pathOutput
     fig_name = os.path.basename(os.path.splitext(path)[0])
 
     fig = plt.figure(figsize=(7, 6))
@@ -52,6 +59,6 @@ if __name__ == "__main__":
     plt.ylabel(r"$\rm y~[m]$")
     plt.title(title)
 
-    plt.savefig("./%s.pdf" % fig_name)
-    plt.savefig("./%s.png" % fig_name)
+    plt.savefig("%s/%s.pdf" % (path_output, fig_name))
+    plt.savefig("%s/%s.png" % (path_output, fig_name))
     plt.close()

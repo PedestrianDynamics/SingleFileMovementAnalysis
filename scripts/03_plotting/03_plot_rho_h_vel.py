@@ -44,6 +44,12 @@ def get_parser_args():
         help="Enter the labels` texts of the data (plot legend)",
         nargs="+"
     )
+    parser.add_argument(
+        "-po",
+        "--pathOutput",
+        default="",
+        help="Enter the path to save the output"
+    )
     return parser.parse_args()
 
 
@@ -54,6 +60,7 @@ if __name__ == "__main__":
     title = args.title
     fig_name = args.figName
     labels = args.label
+    path_output = args.pathOutput
 
     fig1 = plt.figure()
     ax1 = fig1.add_subplot(111)
@@ -75,8 +82,8 @@ if __name__ == "__main__":
     ax1.set_ylabel(r"$\rm v_{i}(t)~[m/s]$")
     ax1.legend()
     ax1.set_title(title)
-    fig1.savefig("./%s_h_vel.png" % fig_name)
-    fig1.savefig("./%s_h_vel.pdf" % fig_name)
+    fig1.savefig("%s/%s_h_vel.png" % (path_output, fig_name))
+    fig1.savefig("%s/%s_h_vel.pdf" % (path_output, fig_name))
     plt.close(fig1)
 
     # ax2.set_xlim(-0.5, 2.5)
@@ -85,6 +92,6 @@ if __name__ == "__main__":
     ax2.set_ylabel(r"$\rm v_{i}(t)~[m/s]$")
     ax2.legend()
     ax2.set_title(title)
-    fig2.savefig("./%s_rho_vel.png" % fig_name)
-    fig2.savefig("./%s_rho_vel.pdf" % fig_name)
+    fig2.savefig("%s/%s_rho_vel.png" % (path_output, fig_name))
+    fig2.savefig("%s/%s_rho_vel.pdf" % (path_output, fig_name))
     plt.close(fig2)

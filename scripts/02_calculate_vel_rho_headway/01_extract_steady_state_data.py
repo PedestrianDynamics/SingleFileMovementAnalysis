@@ -38,6 +38,12 @@ def get_parser_args():
         help="Enter the end frame of the steady state",
         nargs="+"
     )
+    parser.add_argument(
+        "-po",
+        "--pathOutput",
+        default="",
+        help="Enter the path to save the output"
+    )
     return parser.parse_args()
 
 
@@ -47,6 +53,7 @@ if __name__ == "__main__":
     files = args.fileName  # Names of the rho_v files
     starts = args.start  # start frame of the steady state for each file
     ends = args.end  # End frame of the steady state for each file
+    path_output = args.pathOutput
 
     for file, st, en in zip(files, starts, ends):
         n = ["id", "fr", "x", "y", "z", "velocity", "headway", "rho"]
@@ -58,5 +65,12 @@ if __name__ == "__main__":
         rho_v = data[data[:, 1] > st]
         rho_v = rho_v[rho_v[:, 1] < en]
 
-        spath = "%s/%s_steadystate.txt" % (path, file)
-        np.savetxt(spath, rho_v, delimiter="\t", header=header, comments="", newline="\r\n", fmt=fmt)
+        np.savetxt(
+            "%s/%s_steadystate.txt" % (path_output, file),
+            rho_v,
+            delimiter="\t",
+            header=header,
+            comments="",
+            newline="\r\n",
+            fmt=fmt
+        )

@@ -21,12 +21,19 @@ def get_parser_args():
         "--path",
         default="./",
         help="Enter the path of the vel_h_rho file (default='./')")
+    parser.add_argument(
+        "-po",
+        "--pathOutput",
+        default="",
+        help="Enter the path to save the output"
+    )
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = get_parser_args()
     path = args.path
+    path_output = args.pathOutput
 
     fig_name = os.path.basename(os.path.splitext(path)[0])
     data = pd.read_csv(path, comment="#", sep="\t", names=["ID", "FR", "x", "y", "z", "vel", "headway", "density"])
@@ -43,5 +50,5 @@ if __name__ == "__main__":
     print("Minimum frame: ", data.FR.min())
     print("Maximum frame: ", data.FR.max())
     plt.xlabel(r" $\rm Time[Frame]$")
-    plt.savefig("./%s_timeseries_rho_vel.pdf" % fig_name)
+    plt.savefig("%s/%s_timeseries_rho_vel.pdf" % (path_output, fig_name))
     plt.close()

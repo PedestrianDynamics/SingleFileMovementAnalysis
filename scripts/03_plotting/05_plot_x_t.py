@@ -32,6 +32,12 @@ def get_parser_args():
         "--title",
         help="Enter the title of the figure"
     )
+    parser.add_argument(
+        "-po",
+        "--pathOutput",
+        default="",
+        help="Enter the path to save the output"
+    )
     return parser.parse_args()
 
 
@@ -40,6 +46,8 @@ if __name__ == "__main__":
     path_file = args.path
     title = args.title
     fps = args.fps
+    path_output = args.pathOutput
+
     file_name = os.path.splitext(path_file)[0]
 
     fig = plt.figure(figsize=(6, 6))
@@ -59,6 +67,6 @@ if __name__ == "__main__":
     plt.title(title)
     plt.xlabel(r"Space [$\rm m$]")
     plt.ylabel(r"Time [$\rm sec.$]")
-    plt.savefig(file_name + "_x_t.pdf")
-    plt.savefig(file_name + "_x_t.png")
+    plt.savefig("%s/%s_x_t.pdf" % (path_output, file_name))
+    plt.savefig("%s/%s_x_t.png" % (path_output, file_name))
     plt.close()

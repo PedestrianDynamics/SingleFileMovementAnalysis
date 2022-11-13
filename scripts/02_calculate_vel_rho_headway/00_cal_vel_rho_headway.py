@@ -34,6 +34,12 @@ def get_parser_args():
         "--expName",
         help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
     )
+    parser.add_argument(
+        "-po",
+        "--pathOutput",
+        default="",
+        help="Enter the path to save the output"
+    )
     return parser.parse_args()
 
 
@@ -42,6 +48,7 @@ if __name__ == "__main__":
     path = args.path
     delta_t = args.deltaTime
     exp_name = args.expName
+    path_output = args.pathOutput
     sys.path.append(path)
 
     e = EXPERIMENTS[exp_name]
@@ -54,7 +61,7 @@ if __name__ == "__main__":
     for p_file in files:
         if len(p_file):
             file_name = os.path.splitext(p_file)[0]
-            path = "%s_vel_h_rho.txt" % file_name
+            path = "%s/%s_vel_h_rho.txt" % (path_output, file_name)
 
             print("Info:\tCalculating: %s" % p_file)
             data = read_trajectory_data(p_file)
