@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     for p_file in files:
         if len(p_file):
-            file_name = os.path.splitext(p_file)[0]
+            file_name = os.path.basename(os.path.splitext(p_file)[0])
             path = "%s/%s_vel_h_rho.txt" % (path_output, file_name)
 
             print("Info:\tCalculating: %s" % p_file)
@@ -80,7 +80,6 @@ if __name__ == "__main__":
                 frame_data = frame_data[frame_data[:, 2].argsort()]
 
                 # B. Calculate pedestrian velocity
-                # TODO: calculation of clockwise experiment velocity?
                 if camera_capture == 0:
                     velocity = individual_velocity_top_view(data, frame_data, delta_t, fr, frame_start,
                                                             frame_end, fps, c)
