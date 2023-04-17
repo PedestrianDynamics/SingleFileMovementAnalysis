@@ -1,8 +1,8 @@
 """
 ©Rudina Subaih
 Plot the individual fundamental diagram (FD, rho-velocity relation) and the headway-velocity relation of pedestrians
-    - for different experiments (make sure that for each experiment, the data of all runs are in the same .txt file)
-    - for the same experiment, different runs (provide the data of each run using a separate .txt file)
+    - for different experiments (make sure that for each experiment, the data of all runs are in the same 01_FD_germany_seyfried2005_all.txt file)
+    - for the same experiment, different runs (provide the data of each run using a separate 01_FD_germany_seyfried2005_all.txt file)
 """
 import argparse
 
