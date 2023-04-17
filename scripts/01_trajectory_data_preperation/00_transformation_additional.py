@@ -77,7 +77,7 @@ if __name__ == "__main__":
         print("Transforming: %s/%s" % (path, file))
         file_name = os.path.splitext(file)[0]
 
-        # Some trajectory files miss the z column (i. e. motivation_germany_lukowski experiment)
+        # Some trajectory files miss the z column (i.e. motivation_germany_lukowski experiment)
         try:
             data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3, 4))
         except:
