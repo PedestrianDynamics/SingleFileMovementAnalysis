@@ -70,6 +70,8 @@ def individual_velocity_top_view(data, frame_data, delta_t, frame_current, frame
         data_frame_next = data[data[:, 1] == frame_end]  # take the last data frame (frame_end)
 
     # 2. Order the rows of the data frame prev and next by the value of x-axis ascending (orders of ped. walking)
+    # TODO: some pedestrians' information in the previous and next frame is missing (data extraction error). ERROR:
+    #  in velocity calculation
     data_frame_prev = data_frame_prev[data_frame_prev[:, 2].argsort()]
     data_frame_next = data_frame_next[data_frame_next[:, 2].argsort()]
 
@@ -81,9 +83,15 @@ def individual_velocity_top_view(data, frame_data, delta_t, frame_current, frame
     for ped_id in ped_ids:
         ped_data_frame = data_frame_next[data_frame_next[:, 0] == ped_id]
         if ped_data_frame.size != 0:
-            velocity[indx] = (data_frame_next[data_frame_next[:, 0] == ped_id][0][2] -
-                              data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]) / delta_t
-            indx += 1
+            try:
+                velocity[indx] = (data_frame_next[data_frame_next[:, 0] == ped_id][0][2] -
+                                  data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]) / delta_t
+                indx += 1
+            except:
+                # TODO: some pedestrians' information in the previous and next frame is missing (data extraction
+                #  error). ERROR: in velocity calculation. For now I will do it like this
+                velocity[indx] = 100
+                indx += 1
         else:
             # TODO: indx += 1 ?!
             continue
