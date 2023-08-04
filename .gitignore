@@ -7,3 +7,4 @@ __pycache__/
 .gitignore/
 .idea/
 __init__.py
+03_plotting/plots_style.py
