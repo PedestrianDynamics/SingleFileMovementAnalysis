@@ -30,6 +30,7 @@ class ExperimentData:
     radius: Optional[float] = 0
     circumference: Optional[float] = 0
     camera_capture: int = 0  # 0 => top_view, 1 => side_view (default=0)
+    temporal: int = 0  # 0=> fps, 1 => time (sec.)
 
 
 EXPERIMENTS = {
