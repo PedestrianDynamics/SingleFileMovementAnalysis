@@ -202,4 +202,12 @@ EXPERIMENTS = {
         circumference=25.7,
         camera_capture=0
     ),
+    "heightConstrains_china_ma": ExperimentData(
+        fps=25,
+        length=4,
+        radius=2.4,
+        circumference=28.08,
+        camera_capture=0,
+        temporal=1
+    )
 }
