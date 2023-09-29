@@ -2,6 +2,11 @@
 ©Rudina Subaih
 Making additional transformations for each experiment based on the coordinate system defined while extracting the
 trajectories
+PLUS:
+Unify the format of the raw trajectory file of the experiment as:
+# id frame x y z
+because each experiment has different format and type of the trajectory files (exported from different trajectory
+extraction software)
 """
 import argparse
 import os
@@ -41,6 +46,57 @@ def get_parser_args():
     return parser.parse_args()
 
 
+def file_formate(file, experiment_name: str):
+    """
+    make the format of the trajectory file
+    #id  frame   x   y   z
+    OR
+    #id  time   x   y   z
+    :param file_name: name of the trajectory file
+    :return:
+    """
+    e = EXPERIMENTS[experiment_name]
+
+    data = np.loadtxt("%s/%s" % (path, file), skiprows=1, delimiter=e.delimiter)
+
+    if e.id_col_index is None:
+        raise ValueError('ERROR: you have to add pedestrian ID to the trajectory file.')
+
+    if e.x_col_index is None:
+        raise ValueError('ERROR: you have to add x-coordinate to the trajectory file.')
+
+    if e.y_col_index is None:
+        raise ValueError('ERROR: you have to add y-coordinate to the trajectory file.')
+
+    # Specify the column indices by which you want to sort the rows
+    column_indices = (e.id_col_index, e.x_col_index)
+
+    # Get the indices that would sort the first column
+    sorted_indices = np.lexsort((data[:, column_indices[1]], data[:, column_indices[0]]))
+
+    # Sort the matrix based on the specified columns
+    data = data[sorted_indices]
+
+    if e.fr_col_index is None:
+        # iterate over pedestrians and give them frame
+        pedIDs = set(data[:, e.id_col_index])
+        frames = np.array([])
+        for id in pedIDs:
+            ped_data = data[data[:, e.id_col_index] == id]
+            frames = np.append(frames, np.arange(ped_data.shape[0]))  # values from 0 to the length of ped. traj.
+    else:
+        frames = data[:, e.fr_col_index]
+
+    if e.z_col_index is None:
+        z = np.zeros(data.shape[0])  # values equal 0
+    else:
+        z = frames = data[:, e.z_col_index]
+
+    # Create a 2D NumPy matrix by stacking the 1D arrays vertically
+    data = np.column_stack((data[:, e.id_col_index], frames, data[:, e.x_col_index], data[:, e.y_col_index], z))
+    return data
+
+
 def process_data(arr: npt.NDArray[np.float64], experiment_name: str):
     """
     apply the additional transformation which is specific for each experiment
@@ -77,13 +133,10 @@ if __name__ == "__main__":
         print("Transforming: %s/%s" % (path, file))
         file_name = os.path.splitext(file)[0]
 
-        # Some trajectory files miss the z column (i.e. motivation_germany_lukowski experiment)
-        try:
-            data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3, 4))
-        except:
-            data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3))
-            data = np.append(data, [[0] for _ in range(len(data[:, 0]))], axis=1)
+        # format of the file
+        data = file_formate(file, exp_name)
 
+        # setup coordination system transformation
         data = process_data(data, exp_name)
 
         header = "#id\tfr\tx\ty\tz"
