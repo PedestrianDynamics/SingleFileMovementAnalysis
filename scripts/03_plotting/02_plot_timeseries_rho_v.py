@@ -49,4 +49,5 @@ if __name__ == "__main__":
     print("Maximum frame: ", data.FR.max())
     plt.xlabel(r" $\rm Time[Frame]$")
     plt.savefig("%s/%s_timeseries_rho_vel.pdf" % (path_output, fig_name))
+    plt.savefig("%s/%s_timeseries_rho_vel.png" % (path_output, fig_name))
     plt.close()
