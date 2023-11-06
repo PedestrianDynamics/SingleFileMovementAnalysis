@@ -65,14 +65,6 @@ def get_parser_args():
         help="Enter the z_col_index of the trajectory file",
     )
     parser.add_argument(
-        "-addiIdx",
-        "--addiColIndex",
-        default=None,
-        type=int,
-        help="Enter the additional_col_index of the trajectory file",
-        nargs="+"
-    )
-    parser.add_argument(
         "-po",
         "--pathOutput",
         help="Enter the path to save the output"
@@ -81,7 +73,7 @@ def get_parser_args():
 
 
 def file_formate(data, id_col_index, fr_col_index, x_col_index,
-                 y_col_index, z_col_index, additional_col_index):
+                 y_col_index, z_col_index):
     """
     make the format of the trajectory file
     #id  frame   x   y   z
@@ -160,7 +152,6 @@ if __name__ == "__main__":
     x_col_index = arg.xColIndex
     y_col_index = arg.yColIndex
     z_col_index = arg.zColIndex
-    additional_col_index = arg.addiColIndex
 
     for file in files:
         print("Transforming: %s/%s" % (path, file))
@@ -178,8 +169,7 @@ if __name__ == "__main__":
                             fr_col_index,
                             x_col_index,
                             y_col_index,
-                            z_col_index,
-                            additional_col_index)
+                            z_col_index)
 
         header = "#id\tfr\tx\ty\tz"
         np.savetxt(
