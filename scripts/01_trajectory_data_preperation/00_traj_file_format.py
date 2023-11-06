@@ -6,10 +6,8 @@ import argparse
 import os
 
 import numpy as np
-import numpy.typing as npt
 import pandas as pd
 import sqlite3
-import pedpy
 
 
 def get_parser_args():
