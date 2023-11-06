@@ -4,77 +4,78 @@ Unify the raw trajectory file format to a unified format
 """
 import argparse
 import os
+from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
 import sqlite3
 
 
-def get_parser_args():
-    """
-    Required arguments from the user to input
-    :return: parser of arguments
-    """
+def get_parser_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="transform the trajectories (x, y)")
     parser.add_argument(
         "-p",
         "--path",
-        help="Enter the path to the directory containing the trajectory files"
+        help="Enter the path to the directory containing the trajectory files",
+        type=str
     )
     parser.add_argument(
         "-n",
         "--fileName",
         help="Enter the names of the trajectory files",
-        nargs="+"
+        nargs="+",
+        type=str
     )
     parser.add_argument(
         "-deli",
         "--delimiter",
         help="Enter the delimiter of the trajectory file",
+        type=str
     )
     parser.add_argument(
         "-idIdx",
         "--idColIndex",
-        type=int,
         help="Enter the id_col_index of the trajectory file",
+        type=int
     )
     parser.add_argument(
         "-frIdx",
         "--frColIndex",
-        type=int,
         help="Enter the fr_col_index of the trajectory file",
+        type=int
     )
     parser.add_argument(
         "-xIdx",
         "--xColIndex",
-        type=int,
         help="Enter the x_col_index of the trajectory file",
+        type=int
     )
     parser.add_argument(
         "-yIdx",
         "--yColIndex",
         default=None,
-        type=int,
         help="Enter the y_col_index of the trajectory file",
+        type=int
     )
     parser.add_argument(
         "-zIdx",
         "--zColIndex",
-        type=int,
-        help="Enter the z_col_index of the trajectory file",
+        help="Enter the z_col_index of the trajectory file. Enter -1 if there is no z column",
+        type=int
     )
     parser.add_argument(
         "-po",
         "--pathOutput",
-        help="Enter the path to save the output"
+        help="Enter the path to save the output",
+        type=str
     )
     return parser.parse_args()
 
 
-def file_format(traj_data, id_col_index, fr_col_index, x_col_index,
-                y_col_index, z_col_index):
+def file_format(traj_data: np.ndarray, id_col_index: int, fr_col_index: int,
+                x_col_index: int, y_col_index: int, z_col_index: Optional[int]) -> np.ndarray:
     """
-    make the format of the trajectory file
+    Make the format of the trajectory file
     #id  frame   x   y   z
     OR
     #id  time   x   y   z
@@ -114,7 +115,7 @@ def file_format(traj_data, id_col_index, fr_col_index, x_col_index,
     else:
         frames = traj_data[:, fr_col_index]
 
-    if z_col_index is None:
+    if z_col_index == -1:
         z = np.zeros(traj_data.shape[0])  # values equal 0
     else:
         z = frames = traj_data[:, z_col_index]
@@ -128,7 +129,7 @@ def file_format(traj_data, id_col_index, fr_col_index, x_col_index,
     return traj_data
 
 
-def read_sqlite_file(traj_path, traj_file_name):
+def read_sqlite_file(traj_path: str, traj_file_name: str) -> pd.DataFrame:
     """
     To read the trajectory data from .sqlite files
     :param traj_path: string. Path to the trajectory file
@@ -146,16 +147,16 @@ def read_sqlite_file(traj_path, traj_file_name):
 
 
 if __name__ == "__main__":
-    arg = get_parser_args()
-    path = arg.path
-    files = arg.fileName
-    path_output = arg.pathOutput
-    delimiter = arg.delimiter
-    id_col_index = arg.idColIndex
-    fr_col_index = arg.frColIndex
-    x_col_index = arg.xColIndex
-    y_col_index = arg.yColIndex
-    z_col_index = arg.zColIndex
+    arg: argparse.Namespace = get_parser_args()
+    path: str = arg.path
+    files: List[str] = arg.fileName
+    path_output: str = arg.pathOutput
+    delimiter: str = arg.delimiter
+    id_col_index: int = arg.idColIndex
+    fr_col_index: int = arg.frColIndex
+    x_col_index: int = arg.xColIndex
+    y_col_index: Optional[int] = arg.yColIndex
+    z_col_index: int = arg.zColIndex
 
     for file in files:
         print("Transforming: %s/%s" % (path, file))
