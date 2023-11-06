@@ -14,6 +14,9 @@ import os
 import numpy as np
 import numpy.typing as npt
 from experiments import EXPERIMENTS
+import pandas as pd
+import sqlite3
+import pedpy
 
 
 def get_parser_args():
@@ -46,7 +49,7 @@ def get_parser_args():
     return parser.parse_args()
 
 
-def file_formate(file, experiment_name: str):
+def file_formate(data, experiment_name):
     """
     make the format of the trajectory file
     #id  frame   x   y   z
@@ -56,8 +59,6 @@ def file_formate(file, experiment_name: str):
     :return:
     """
     e = EXPERIMENTS[experiment_name]
-
-    data = np.loadtxt("%s/%s" % (path, file), skiprows=1, delimiter=e.delimiter)
 
     if e.id_col_index is None:
         raise ValueError('ERROR: you have to add pedestrian ID to the trajectory file.')
@@ -94,6 +95,10 @@ def file_formate(file, experiment_name: str):
 
     # Create a 2D NumPy matrix by stacking the 1D arrays vertically
     data = np.column_stack((data[:, e.id_col_index], frames, data[:, e.x_col_index], data[:, e.y_col_index], z))
+
+    # sort based od id and fr because the previous data appears not sorted
+    data = data[np.lexsort((data[:, 1], data[:, 0]))]
+
     return data
 
 
@@ -111,15 +116,32 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str):
         arr = arr[((arr[:, 2] / e.unit) >= e.Min) & ((arr[:, 2] / e.unit) <= e.Max)]
 
     # transformation for x and y values (unique for each experiment)
-    x = arr[:, e.x_index].copy()
-    y = arr[:, e.y_index].copy()
+    x = arr[:, e.x_rotate].copy()
+    y = arr[:, e.y_rotate].copy()
 
-    arr[:, 2] = (e.inv_x * x / e.unit) + e.shift_x
+    arr[:, 2] = (e.ref_x * x / e.unit) + e.shift_x
 
-    if e.y_index:
-        arr[:, 3] = ((e.inv_y * y) / e.unit) + e.shift_y
+    if e.y_rotate:
+        arr[:, 3] = ((e.ref_y * y) / e.unit) + e.shift_y
 
     return arr
+
+
+def read_sqlite_file(path, file):
+    """
+
+    :param trajectory_file:
+    :return: obj: TrajectoryData
+    obj: WalkableArea
+    """
+    trajectory_file = "%s/%s" % (path, file)
+    con = sqlite3.connect(trajectory_file)
+    data = pd.read_sql_query(
+        "select frame, id, pos_x as x, pos_y as y, ori_x as ox, ori_y as oy from trajectory_data",
+        con,
+    )
+    # table in the SQLite database. The data is read into a Pandas DataFrame named data.
+    return data
 
 
 if __name__ == "__main__":
@@ -132,9 +154,16 @@ if __name__ == "__main__":
     for file in files:
         print("Transforming: %s/%s" % (path, file))
         file_name = os.path.splitext(file)[0]
-
+        file_type = os.path.splitext(file)[1]  # extension of the data file
         # format of the file
-        data = file_formate(file, exp_name)
+        if file_type == ".sqlite":
+            data = read_sqlite_file(path, file)
+            data = data.to_numpy()  # fr, pedID, x, y, ori_x, ori_y
+        else:
+            e = EXPERIMENTS[exp_name]
+            data = np.loadtxt("%s/%s" % (path, file), skiprows=1, delimiter=e.delimiter)
+
+        data = file_formate(data, exp_name)
 
         # setup coordination system transformation
         data = process_data(data, exp_name)
