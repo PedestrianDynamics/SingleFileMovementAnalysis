@@ -20,7 +20,7 @@ def get_parser_args():
     parser.add_argument(
         "-p",
         "--path",
-        help="Enter the path of the trajectory file"
+        help="Enter the path to the directory containing the trajectory files (transformed additional)"
     )
     parser.add_argument(
         "-expn",
@@ -32,12 +32,19 @@ def get_parser_args():
         "--pathOutput",
         help="Enter the path to save the output"
     )
+    parser.add_argument(
+        "-n",
+        "--fileName",
+        help="Enter the names of the trajectory files",
+        nargs="+"
+    )
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     arg = get_parser_args()
     path = arg.path
+    files = arg.fileName
     fig_name = os.path.basename(os.path.splitext(path)[0])
     exp_name = arg.expName
     path_output = arg.pathOutput
@@ -49,21 +56,26 @@ if __name__ == "__main__":
     # record start time
     start = time.time()
 
-    data = np.loadtxt(path, usecols=(0, 1, 2, 3, 4))
-    data_new = np.empty((0, 5), int)
+    for file in files:
+        print("Transforming: %s/%s" % (path, file))
+        file_name = os.path.splitext(file)[0]
+        file_type = os.path.splitext(file)[1]  # extension of the data file
 
-    for row in data:
-        x_trans, y_trans = transformation_coord(row[2], row[3], length, r)
-        data_new = np.append(data_new, np.array([[row[0], row[1], x_trans, y_trans, row[4]]]), axis=0)
+        data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3, 4))
+        data_new = np.empty((len(data), 5))
 
-    header = "#id\tfr\tx\ty\tz"
-    np.savetxt("%s/%s_straight_traj.txt" % (path_output, fig_name),
-               data_new,
-               delimiter="\t",
-               header=header,
-               comments="",
-               newline="\r\n",
-               fmt="%d\t%d\t%.4f\t%.4f\t%.4f")
+        for i, row in enumerate(data):
+            x_trans, y_trans = transformation_coord(row[2], row[3], length, r)
+            data_new[i] = [row[0], row[1], x_trans, y_trans, row[4]]
+
+        header = "#id\tfr\tx\ty\tz"
+        np.savetxt("%s/%s_straight_traj.txt" % (path_output, file_name),
+                   data_new,
+                   delimiter="\t",
+                   header=header,
+                   comments="",
+                   newline="\r\n",
+                   fmt="%d\t%d\t%.4f\t%.4f\t%.4f")
 
     # record end time
     end = time.time()
