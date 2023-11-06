@@ -30,8 +30,9 @@ pip3 install -r requirements.txt
 
 | Script | Description |
 | --- | --- |
-|[00_transformation_additional.py](scripts/01_trajectory_data_preperation/01_transformation_additional.py) | Trajectory data may require some transformation (rotation , transition, etc). |
-|[01_transformation_straight_traj.py](scripts/01_trajectory_data_preperation/02_transformation_straight_traj.py) | Transform oval to straight trajectory data according to [Ziemer](https://link.springer.com/chapter/10.1007/978-3-319-33482-0_12). |
+|[00_traj_file_format.py](scripts/01_trajectory_data_preperation/00_traj_file_format.py)| (optional) Trajectory data files have several format. This script extract some data from the raw file and unify the format of the data file for the later calculations.|
+|[01_transformation_additional.py](scripts/01_trajectory_data_preperation/01_transformation_additional.py) | (optional) Trajectory data require some transformation (rotation , transition, etc). |
+|[02_transformation_straight_traj.py](scripts/01_trajectory_data_preperation/02_transformation_straight_traj.py) | Transform oval to straight trajectory data according to [Ziemer](https://link.springer.com/chapter/10.1007/978-3-319-33482-0_12). |
 |[00_cal_vel_rho_headway.py](scripts/02_calculate_vel_rho_headway/00_cal_vel_rho_headway.py)|Calculate the individual velocity, headway, and 1D Voronoi density.|
 |[01_extract_steady_state_data.py](scripts/02_calculate_vel_rho_headway/01_extract_steady_state_data.py)|Extract and to save only the steady state data|
 |[00_plot_trajectories.py](scripts/03_plotting/00_plot_trajectories.py)|Plot the raw trajectory data or Plot the straight trajectory data after|
