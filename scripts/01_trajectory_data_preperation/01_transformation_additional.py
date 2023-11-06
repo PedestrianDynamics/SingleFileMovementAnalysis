@@ -16,7 +16,6 @@ import numpy.typing as npt
 from experiments import EXPERIMENTS
 import pandas as pd
 import sqlite3
-import pedpy
 
 
 def get_parser_args():
@@ -39,7 +38,7 @@ def get_parser_args():
     parser.add_argument(
         "-expn",
         "--expName",
-        help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
+        help="Enter the 'experiment name': " + " , ".join(EXPERIMENTS.keys()),
     )
     parser.add_argument(
         "-po",
@@ -49,57 +48,57 @@ def get_parser_args():
     return parser.parse_args()
 
 
-def file_formate(data, experiment_name):
-    """
-    make the format of the trajectory file
-    #id  frame   x   y   z
-    OR
-    #id  time   x   y   z
-    :param file_name: name of the trajectory file
-    :return:
-    """
-    e = EXPERIMENTS[experiment_name]
-
-    if e.id_col_index is None:
-        raise ValueError('ERROR: you have to add pedestrian ID to the trajectory file.')
-
-    if e.x_col_index is None:
-        raise ValueError('ERROR: you have to add x-coordinate to the trajectory file.')
-
-    if e.y_col_index is None:
-        raise ValueError('ERROR: you have to add y-coordinate to the trajectory file.')
-
-    # Specify the column indices by which you want to sort the rows
-    column_indices = (e.id_col_index, e.x_col_index)
-
-    # Get the indices that would sort the first column
-    sorted_indices = np.lexsort((data[:, column_indices[1]], data[:, column_indices[0]]))
-
-    # Sort the matrix based on the specified columns
-    data = data[sorted_indices]
-
-    if e.fr_col_index is None:
-        # iterate over pedestrians and give them frame
-        pedIDs = set(data[:, e.id_col_index])
-        frames = np.array([])
-        for id in pedIDs:
-            ped_data = data[data[:, e.id_col_index] == id]
-            frames = np.append(frames, np.arange(ped_data.shape[0]))  # values from 0 to the length of ped. traj.
-    else:
-        frames = data[:, e.fr_col_index]
-
-    if e.z_col_index is None:
-        z = np.zeros(data.shape[0])  # values equal 0
-    else:
-        z = frames = data[:, e.z_col_index]
-
-    # Create a 2D NumPy matrix by stacking the 1D arrays vertically
-    data = np.column_stack((data[:, e.id_col_index], frames, data[:, e.x_col_index], data[:, e.y_col_index], z))
-
-    # sort based od id and fr because the previous data appears not sorted
-    data = data[np.lexsort((data[:, 1], data[:, 0]))]
-
-    return data
+# def file_formate(data, experiment_name):
+#     """
+#     make the format of the trajectory file
+#     #id  frame   x   y   z
+#     OR
+#     #id  time   x   y   z
+#     :param file_name: name of the trajectory file
+#     :return:
+#     """
+#     e = EXPERIMENTS[experiment_name]
+#
+#     if e.id_col_index is None:
+#         raise ValueError('ERROR: you have to add pedestrian ID to the trajectory file.')
+#
+#     if e.x_col_index is None:
+#         raise ValueError('ERROR: you have to add x-coordinate to the trajectory file.')
+#
+#     if e.y_col_index is None:
+#         raise ValueError('ERROR: you have to add y-coordinate to the trajectory file.')
+#
+#     # Specify the column indices by which you want to sort the rows
+#     column_indices = (e.id_col_index, e.x_col_index)
+#
+#     # Get the indices that would sort the first column
+#     sorted_indices = np.lexsort((data[:, column_indices[1]], data[:, column_indices[0]]))
+#
+#     # Sort the matrix based on the specified columns
+#     data = data[sorted_indices]
+#
+#     if e.fr_col_index is None:
+#         # iterate over pedestrians and give them frame
+#         pedIDs = set(data[:, e.id_col_index])
+#         frames = np.array([])
+#         for id in pedIDs:
+#             ped_data = data[data[:, e.id_col_index] == id]
+#             frames = np.append(frames, np.arange(ped_data.shape[0]))  # values from 0 to the length of ped. traj.
+#     else:
+#         frames = data[:, e.fr_col_index]
+#
+#     if e.z_col_index is None:
+#         z = np.zeros(data.shape[0])  # values equal 0
+#     else:
+#         z = frames = data[:, e.z_col_index]
+#
+#     # Create a 2D NumPy matrix by stacking the 1D arrays vertically
+#     data = np.column_stack((data[:, e.id_col_index], frames, data[:, e.x_col_index], data[:, e.y_col_index], z))
+#
+#     # sort based od id and fr because the previous data appears not aus_mix_sorted
+#     data = data[np.lexsort((data[:, 1], data[:, 0]))]
+#
+#     return data
 
 
 def process_data(arr: npt.NDArray[np.float64], experiment_name: str):
@@ -163,7 +162,7 @@ if __name__ == "__main__":
             e = EXPERIMENTS[exp_name]
             data = np.loadtxt("%s/%s" % (path, file), skiprows=1, delimiter=e.delimiter)
 
-        data = file_formate(data, exp_name)
+        # data = file_formate(data, exp_name)
 
         # setup coordination system transformation
         data = process_data(data, exp_name)
