@@ -25,6 +25,11 @@ def get_parser_args():
         "--pathOutput",
         help="Enter the path to save the output"
     )
+    parser.add_argument(
+        "-t",
+        "--title",
+        help="Enter a title for the figure",
+    )
     return parser.parse_args()
 
 
@@ -32,6 +37,7 @@ if __name__ == "__main__":
     args = get_parser_args()
     path = args.path
     path_output = args.pathOutput
+    title = args.title
 
     fig_name = os.path.basename(os.path.splitext(path)[0])
     data = pd.read_csv(path, comment="#", sep="\t", names=["ID", "FR", "x", "y", "z", "vel", "headway", "density"])
@@ -42,8 +48,9 @@ if __name__ == "__main__":
     plt.plot(data.FR, data.vel, 'b-', label="Velocity")
 
     plt.axvline(x=600, linestyle="--")
-    plt.axvline(x=1600, linestyle="--")
+    plt.axvline(x=15000, linestyle="--")
     plt.legend()
+    plt.title(title)
 
     print("Minimum frame: ", data.FR.min())
     print("Maximum frame: ", data.FR.max())
