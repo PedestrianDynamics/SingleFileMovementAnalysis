@@ -12,6 +12,10 @@ import sqlite3
 
 
 def get_parser_args() -> argparse.Namespace:
+    """
+    Required arguments from the user to input
+    :return: parser of arguments
+    """
     parser = argparse.ArgumentParser(description="transform the trajectories (x, y)")
     parser.add_argument(
         "-p",
