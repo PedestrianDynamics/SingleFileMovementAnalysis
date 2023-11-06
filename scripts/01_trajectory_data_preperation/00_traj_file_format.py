@@ -1,6 +1,7 @@
 """
 ©Rudina Subaih
-Unify the raw trajectory file format to a unifird format"""
+Unify the raw trajectory file format to a unified format
+"""
 import argparse
 import os
 
@@ -72,14 +73,19 @@ def get_parser_args():
     return parser.parse_args()
 
 
-def file_formate(data, id_col_index, fr_col_index, x_col_index,
-                 y_col_index, z_col_index):
+def file_format(traj_data, id_col_index, fr_col_index, x_col_index,
+                y_col_index, z_col_index):
     """
     make the format of the trajectory file
     #id  frame   x   y   z
     OR
     #id  time   x   y   z
-    :param file_name: name of the trajectory file
+    :param traj_data:
+    :param id_col_index:
+    :param fr_col_index:
+    :param x_col_index:
+    :param y_col_index:
+    :param z_col_index:
     :return:
     """
     if id_col_index is None:
@@ -95,50 +101,50 @@ def file_formate(data, id_col_index, fr_col_index, x_col_index,
     column_indices = (id_col_index, x_col_index)
 
     # Get the indices that would sort the first column
-    sorted_indices = np.lexsort((data[:, column_indices[1]], data[:, column_indices[0]]))
+    sorted_indices = np.lexsort((traj_data[:, column_indices[1]], traj_data[:, column_indices[0]]))
 
     # Sort the matrix based on the specified columns
-    data = data[sorted_indices]
+    traj_data = traj_data[sorted_indices]
 
     if fr_col_index is None:
         # iterate over pedestrians and give them frame
-        pedIDs = set(data[:, id_col_index])
+        pedIDs = set(traj_data[:, id_col_index])
         frames = np.array([])
         for id in pedIDs:
-            ped_data = data[data[:, id_col_index] == id]
+            ped_data = traj_data[traj_data[:, id_col_index] == id]
             frames = np.append(frames, np.arange(ped_data.shape[0]))  # values from 0 to the length of ped. traj.
     else:
-        frames = data[:, fr_col_index]
+        frames = traj_data[:, fr_col_index]
 
     if z_col_index is None:
-        z = np.zeros(data.shape[0])  # values equal 0
+        z = np.zeros(traj_data.shape[0])  # values equal 0
     else:
-        z = frames = data[:, z_col_index]
+        z = frames = traj_data[:, z_col_index]
 
     # Create a 2D NumPy matrix by stacking the 1D arrays vertically
-    data = np.column_stack((data[:, id_col_index], frames, data[:, x_col_index], data[:, y_col_index], z))
+    traj_data = np.column_stack((traj_data[:, id_col_index], frames, traj_data[:, x_col_index], traj_data[:, y_col_index], z))
 
     # sort based od id and fr because the previous data appears not aus_mix_sorted
-    data = data[np.lexsort((data[:, 1], data[:, 0]))]
+    traj_data = traj_data[np.lexsort((traj_data[:, 1], traj_data[:, 0]))]
 
-    return data
+    return traj_data
 
 
-def read_sqlite_file(path, file):
+def read_sqlite_file(traj_path, traj_file_name):
     """
-
-    :param trajectory_file:
-    :return: obj: TrajectoryData
-    obj: WalkableArea
+    To read the trajectory data from .sqlite files
+    :param traj_path: string. Path to the trajectory file
+    :param traj_file_name: name of the file
+    :return:
     """
-    trajectory_file = "%s/%s" % (path, file)
+    trajectory_file = "%s/%s" % (traj_path, traj_file_name)
     con = sqlite3.connect(trajectory_file)
-    data = pd.read_sql_query(
+    output_data = pd.read_sql_query(
         "select frame, id, pos_x as x, pos_y as y, ori_x as ox, ori_y as oy from trajectory_data",
         con,
     )
     # table in the SQLite database. The data is read into a Pandas DataFrame named data.
-    return data
+    return output_data
 
 
 if __name__ == "__main__":
@@ -164,12 +170,12 @@ if __name__ == "__main__":
         else:
             data = np.loadtxt("%s/%s" % (path, file), skiprows=1, delimiter=delimiter)
 
-        data = file_formate(data,
-                            id_col_index,
-                            fr_col_index,
-                            x_col_index,
-                            y_col_index,
-                            z_col_index)
+        data = file_format(data,
+                           id_col_index,
+                           fr_col_index,
+                           x_col_index,
+                           y_col_index,
+                           z_col_index)
 
         header = "#id\tfr\tx\ty\tz"
         np.savetxt(
