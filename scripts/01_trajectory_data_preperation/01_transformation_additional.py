@@ -10,7 +10,7 @@ extraction software)
 """
 import argparse
 import os
-from typing import List, Optional
+from typing import List
 
 import numpy as np
 import numpy.typing as npt
@@ -93,10 +93,10 @@ def read_sqlite_file(path: str, file: str) -> pd.DataFrame:
 
 if __name__ == "__main__":
     arg: argparse.Namespace = get_parser_args()
-    path: Optional[str] = arg.path
-    exp_key: Optional[str] = arg.expKey
-    files: Optional[List[str]] = arg.fileName
-    path_output: Optional[str] = arg.pathOutput
+    path: str = arg.path
+    exp_key: str = arg.expKey
+    files: List[str] = arg.fileName
+    path_output: str = arg.pathOutput
 
     for file in files:
         print("Transforming: %s/%s" % (path, file))
