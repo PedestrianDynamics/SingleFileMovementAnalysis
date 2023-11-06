@@ -5,13 +5,15 @@ some modifications
 """
 import numpy as np
 import os
+from typing import List
+
 from helper import transformation_coord
 from experiments import EXPERIMENTS
 import time
 import argparse
 
 
-def get_parser_args():
+def get_parser_args() -> argparse.Namespace:
     """
     Arguments required from user to input
     :return: parser of arguments
@@ -23,33 +25,34 @@ def get_parser_args():
         help="Enter the path to the directory containing the trajectory files (transformed additional)"
     )
     parser.add_argument(
-        "-expn",
-        "--expName",
-        help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
+        "-n",
+        "--fileName",
+        help="Enter the names of the trajectory files",
+        nargs="+"
+    )
+    parser.add_argument(
+        "-expk",
+        "--expKey",
+        help="Enter the experiment key: " + " , ".join(EXPERIMENTS.keys()),
     )
     parser.add_argument(
         "-po",
         "--pathOutput",
         help="Enter the path to save the output"
     )
-    parser.add_argument(
-        "-n",
-        "--fileName",
-        help="Enter the names of the trajectory files",
-        nargs="+"
-    )
     return parser.parse_args()
 
 
 if __name__ == "__main__":
-    arg = get_parser_args()
-    path = arg.path
-    files = arg.fileName
-    fig_name = os.path.basename(os.path.splitext(path)[0])
-    exp_name = arg.expName
-    path_output = arg.pathOutput
+    arg: argparse.Namespace = get_parser_args()
+    path: str = arg.path
+    files: List[str] = arg.fileName
+    exp_key: str = arg.expKey
+    path_output: str = arg.pathOutput
 
-    e = EXPERIMENTS[exp_name]
+    fig_name = os.path.basename(os.path.splitext(path)[0])
+
+    e = EXPERIMENTS[exp_key]
     length = e.length
     r = e.radius
 
