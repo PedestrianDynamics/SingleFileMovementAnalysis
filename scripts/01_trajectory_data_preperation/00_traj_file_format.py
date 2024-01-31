@@ -68,6 +68,18 @@ def get_parser_args() -> argparse.Namespace:
         type=int
     )
     parser.add_argument(
+        "-gender",
+        "--genderIndex",
+        help="Enter the gender_index of the trajectory file. Enter -1 if there is no gender column",
+        type=int
+    )
+    parser.add_argument(
+        "-t",
+        "--timeIndex",
+        help="Enter the time_index of the trajectory file. Enter -1 if there is no time column",
+        type=int
+    )
+    parser.add_argument(
         "-po",
         "--pathOutput",
         help="Enter the path to save the output",
@@ -77,7 +89,7 @@ def get_parser_args() -> argparse.Namespace:
 
 
 def file_format(traj_data: np.ndarray, id_col_index: int, fr_col_index: int,
-                x_col_index: int, y_col_index: int, z_col_index: Optional[int]) -> np.ndarray:
+                x_col_index: int, y_col_index: int, z_col_index: Optional[int], gender_index: Optional[int], time_index: Optional[float]) -> np.ndarray:
     """
     Make the format of the trajectory file
     #id  frame   x   y   z
@@ -89,6 +101,8 @@ def file_format(traj_data: np.ndarray, id_col_index: int, fr_col_index: int,
     :param x_col_index:
     :param y_col_index:
     :param z_col_index:
+    :param gender_index:
+    :param time_index:
     :return:
     """
     if id_col_index is None:
@@ -99,6 +113,7 @@ def file_format(traj_data: np.ndarray, id_col_index: int, fr_col_index: int,
 
     if y_col_index is None:
         raise ValueError('ERROR: you have to add y-coordinate to the trajectory file.')
+
 
     # Specify the column indices by which you want to sort the rows
     column_indices = (id_col_index, x_col_index)
@@ -124,8 +139,17 @@ def file_format(traj_data: np.ndarray, id_col_index: int, fr_col_index: int,
     else:
         z = frames = traj_data[:, z_col_index]
 
+    if gender_index == -1:
+        gender_data = np.zeros(traj_data.shape[0])  # values equal 0
+    else:
+        gender_data = frames = traj_data[:, gender_index]
+
+    if time_index == -1:
+        time_data = np.zeros(traj_data.shape[0])  # values equal 0
+    else:
+        time_data = frames = traj_data[:, time_index]
     # Create a 2D NumPy matrix by stacking the 1D arrays vertically
-    traj_data = np.column_stack((traj_data[:, id_col_index], frames, traj_data[:, x_col_index], traj_data[:, y_col_index], z))
+    traj_data = np.column_stack((traj_data[:, id_col_index], frames, traj_data[:, x_col_index], traj_data[:, y_col_index], z, gender_data, time_data))
 
     # sort based od id and fr because the previous data appears not aus_mix_sorted
     traj_data = traj_data[np.lexsort((traj_data[:, 1], traj_data[:, 0]))]
@@ -161,6 +185,8 @@ if __name__ == "__main__":
     x_col_index: int = arg.xColIndex
     y_col_index: Optional[int] = arg.yColIndex
     z_col_index: int = arg.zColIndex
+    gender_index: int = arg.genderIndex
+    time_index: int = arg.timeIndex
 
     for file in files:
         print("Transforming: %s/%s" % (path, file))
@@ -178,9 +204,11 @@ if __name__ == "__main__":
                            fr_col_index,
                            x_col_index,
                            y_col_index,
-                           z_col_index)
+                           z_col_index,
+                           gender_index,
+                           time_index)
 
-        header = "#id\tfr\tx\ty\tz"
+        header = "#id\tfr\tx\ty\tz\tgender\ttime"
         np.savetxt(
             "%s/%s_traj_file_format.txt" % (path_output, file_name),
             data,
@@ -188,5 +216,5 @@ if __name__ == "__main__":
             header=header,
             comments="",
             newline="\r\n",
-            fmt="%d\t%d\t%.4f\t%.4f\t%.4f"
+            fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
         )
