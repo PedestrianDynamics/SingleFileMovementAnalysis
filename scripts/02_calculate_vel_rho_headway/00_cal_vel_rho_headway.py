@@ -30,8 +30,8 @@ def get_parser_args():
         default=0.4,
         help="Enter the time constant to calculate the velocity (default=0.4)")
     parser.add_argument(
-        "-expn",
-        "--expName",
+        "-expk",
+        "--expKey",
         help="Enter the experiment name: " + " , ".join(EXPERIMENTS.keys()),
     )
     parser.add_argument(
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     args = get_parser_args()
     path = args.path
     delta_t = args.deltaTime
-    exp_name = args.expName
+    exp_name = args.expKey
     path_output = args.pathOutput
     sys.path.append(path)
 

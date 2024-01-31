@@ -216,5 +216,5 @@ if __name__ == "__main__":
             header=header,
             comments="",
             newline="\r\n",
-            fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f"
+            fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%d\t%.4f"
         )

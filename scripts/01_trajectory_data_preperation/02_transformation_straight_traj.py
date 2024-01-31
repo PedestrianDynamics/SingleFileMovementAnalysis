@@ -64,21 +64,21 @@ if __name__ == "__main__":
         file_name = os.path.splitext(file)[0]
         file_type = os.path.splitext(file)[1]  # extension of the data file
 
-        data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3, 4))
-        data_new = np.empty((len(data), 5))
+        data = np.loadtxt("%s/%s" % (path, file), usecols=(0, 1, 2, 3, 4, 5, 6))
+        data_new = np.empty((len(data), 7))
 
         for i, row in enumerate(data):
             x_trans, y_trans = transformation_coord(row[2], row[3], length, r)
-            data_new[i] = [row[0], row[1], x_trans, y_trans, row[4]]
+            data_new[i] = [row[0], row[1], x_trans, y_trans, row[4], row[5], row[6]]
 
-        header = "#id\tfr\tx\ty\tz"
+        header = "#id\tfr\tx\ty\tz\tgender\ttime"
         np.savetxt("%s/%s_straight_traj.txt" % (path_output, file_name),
                    data_new,
                    delimiter="\t",
                    header=header,
                    comments="",
                    newline="\r\n",
-                   fmt="%d\t%d\t%.4f\t%.4f\t%.4f")
+                   fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%d\t%.4f")
 
     # record end time
     end = time.time()

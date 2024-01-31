@@ -14,6 +14,8 @@ from typing import List
 
 import numpy as np
 import numpy.typing as npt
+import sys
+import argparse
 from experiments import EXPERIMENTS
 import pandas as pd
 import sqlite3
@@ -113,7 +115,7 @@ if __name__ == "__main__":
         # setup coordination system transformation
         data = process_data(data, exp_key)
 
-        header = "#id\tfr\tx\ty\tz"
+        header = "#id\tfr\tx\ty\tz\tgender\ttime"
         np.savetxt(
             "%s/%s_transformation_additional.txt" % (path_output, file_name),
             data,
@@ -121,5 +123,5 @@ if __name__ == "__main__":
             header=header,
             comments="",
             newline="\r\n",
-            fmt="%d\t%d\t%.4f\t%.4f\t%.4f"
+            fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%d\t%.4f"
         )
