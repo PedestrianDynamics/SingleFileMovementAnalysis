@@ -178,6 +178,7 @@ EXPERIMENTS = {
     ),
     "genderCroMa_setupRight_germany_paetzke": ExperimentData(
         link_data="empty",
+        delimiter='\t',
         shift_x=-1.7,
         shift_y=4.6,
         ref_y=-1,
@@ -191,6 +192,7 @@ EXPERIMENTS = {
     ),
     "genderCroMa_setupLeft_germany_paetzke": ExperimentData(
         link_data="empty",
+        delimiter='\t',
         shift_x=-1.7,
         shift_y=-1.3,
         ref_y=-1,
