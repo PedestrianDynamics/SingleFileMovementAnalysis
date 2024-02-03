@@ -88,6 +88,7 @@ EXPERIMENTS = {
         link_data="https://doi.org/10.34735/ped.2014.2",
         shift_x=1.25,
         shift_y=1.85,
+        delimiter='\t',
         x_rotate=2,
         y_rotate=3,
         unit=1,

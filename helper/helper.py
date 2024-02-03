@@ -5,6 +5,14 @@ import math
 
 import numpy as np
 from scipy.ndimage.interpolation import shift
+import numpy.typing as npt
+
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
+from experiments import EXPERIMENTS
+
+
 
 
 def transformation_coord(x, y, length, r):
@@ -264,3 +272,28 @@ def rotate_array(arr, n, d):
         d = d + 1
     arr[:] = arr[: i] + temp
     return arr
+
+def process_data(arr: npt.NDArray[np.float64], experiment_name: str) -> npt.NDArray[np.float64]:
+    """
+    apply the additional transformation which is specific for each experiment
+    :param arr: trajectory data
+    :param experiment_name: experiment name
+    :return:
+    """
+
+    e = EXPERIMENTS[experiment_name]
+
+    if (e.Min is not None) and (e.Max is not None):  # data inside measurement area (unique for each experiment)
+        arr = arr[((arr[:, 2] / e.unit) >= e.Min) & ((arr[:, 2] / e.unit) <= e.Max)]
+
+    # transformation for x and y values (unique for each experiment)
+    x = arr[:, e.x_rotate].copy()
+    y = arr[:, e.y_rotate].copy()
+
+    arr[:, 2] = (e.ref_x * x / e.unit) + e.shift_x
+
+    if e.y_rotate:
+        arr[:, 3] = ((e.ref_y * y) / e.unit) + e.shift_y
+
+    return arr
+

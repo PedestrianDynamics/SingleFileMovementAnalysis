@@ -7,6 +7,10 @@ import os
 import sys
 
 import numpy as np
+
+sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
+from experiments import EXPERIMENTS
+from helper import process_data
 from helper import read_trajectory_data, individual_velocity_top_view, voronoi_rho_top_view, \
     individual_velocity_side_view, individual_headway_side_view, voronoi_rho_side_view
 from experiments import EXPERIMENTS

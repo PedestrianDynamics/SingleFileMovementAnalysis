@@ -16,7 +16,10 @@ import numpy as np
 import numpy.typing as npt
 import sys
 import argparse
+
+sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
 from experiments import EXPERIMENTS
+
 import pandas as pd
 import sqlite3
 

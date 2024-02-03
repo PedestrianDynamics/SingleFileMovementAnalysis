@@ -7,8 +7,10 @@ import numpy as np
 import os
 from typing import List
 
+sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
 from helper import transformation_coord
 from experiments import EXPERIMENTS
+
 import time
 import argparse
 

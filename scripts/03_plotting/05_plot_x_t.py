@@ -3,9 +3,12 @@
 """
 import argparse
 import os
+import sys
 
 import matplotlib.pyplot as plt
 import pandas as pd
+
+sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
 from experiments import EXPERIMENTS
 
 

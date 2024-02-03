@@ -4,11 +4,15 @@ Visualise the "raw trajectories" spatially (x-y) (oval trajectories)
 Visualise the "straight trajectories" spatially (x-y)
 """
 import os
+import sys
 import argparse
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
 from experiments import EXPERIMENTS
+
 import sqlite3
 
 
