@@ -13,36 +13,41 @@ sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
 from experiments import EXPERIMENTS
 
 
-
-
-def transformation_coord(x, y, length, r):
+def transformation_coord(data, length, r):
     """
     transform coordinates to straight periodic trajectories (Ziemer2016)
     :param length: float. length of the oval corridor (circumference) in meter
     :param r: flowt. Radius
-    :param x: float. a-coordinate
-    :param y: float. y-coordinate
+    :param data_transformation_additional: numpy array.
     :return: float, float. x and y-coordinate
     """
-    x_trans = None
-    y_trans = None
+    data_new = np.empty((len(data), 2))
 
-    if x < 0:
-        arccos_val = (r - y) / math.sqrt((x ** 2) + ((y - r) ** 2))
-        x_trans = (2 * length) + (r * math.pi) + (r * np.arccos(-arccos_val))
-        y_trans = math.sqrt((x ** 2) + ((y - r) ** 2)) - r
-    elif 0 <= x <= length:
-        y_trans = math.sqrt(((y - r) ** 2)) - r
-        if y < r:
-            x_trans = x
-        elif y >= r:
-            x_trans = (2 * length) + (r * math.pi) - x
-    elif x > length:
-        arccos_val = (r - y) / math.sqrt(((x - length) ** 2) + ((y - r) ** 2))
-        x_trans = length + (r * np.arccos(arccos_val))
-        y_trans = math.sqrt(((x - length) ** 2) + ((y - r) ** 2)) - r
+    for i, row in enumerate(data):
+        x_trans = None
+        y_trans = None
 
-    return x_trans, y_trans
+        x=row[0]
+        y=row[1]
+
+        if x < 0:
+            arccos_val = (r - y) / math.sqrt((x ** 2) + ((y - r) ** 2))
+            x_trans = (2 * length) + (r * math.pi) + (r * np.arccos(-arccos_val))
+            y_trans = math.sqrt((x ** 2) + ((y - r) ** 2)) - r
+        elif 0 <= x <= length:
+            y_trans = math.sqrt(((y - r) ** 2)) - r
+            if y < r:
+                x_trans = x
+            elif y >= r:
+                x_trans = (2 * length) + (r * math.pi) - x
+        elif x > length:
+            arccos_val = (r - y) / math.sqrt(((x - length) ** 2) + ((y - r) ** 2))
+            x_trans = length + (r * np.arccos(arccos_val))
+            y_trans = math.sqrt(((x - length) ** 2) + ((y - r) ** 2)) - r
+        
+        data_new[i] = [x_trans, y_trans]
+
+    return data_new
 
 
 def read_trajectory_data(path):
@@ -280,20 +285,75 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str) -> npt.NDAr
     :param experiment_name: experiment name
     :return:
     """
-
     e = EXPERIMENTS[experiment_name]
 
     if (e.Min is not None) and (e.Max is not None):  # data inside measurement area (unique for each experiment)
-        arr = arr[((arr[:, 2] / e.unit) >= e.Min) & ((arr[:, 2] / e.unit) <= e.Max)]
+        arr = arr[((arr[:, 0] / e.unit) >= e.Min) & ((arr[:, 0] / e.unit) <= e.Max)]
 
     # transformation for x and y values (unique for each experiment)
     x = arr[:, e.x_rotate].copy()
     y = arr[:, e.y_rotate].copy()
 
-    arr[:, 2] = (e.ref_x * x / e.unit) + e.shift_x
+    arr[:, 0] = (e.ref_x * x / e.unit) + e.shift_x
 
-    if e.y_rotate:
-        arr[:, 3] = ((e.ref_y * y) / e.unit) + e.shift_y
+    # if e.y_rotate:
+    arr[:, 1] = ((e.ref_y * y) / e.unit) + e.shift_y
 
     return arr
 
+def calculate_speed_density_headway(data: npt.NDArray[np.float64], fps: int, c: float, camera_capture: int, delta_t: float) -> npt.NDArray[np.float64]:
+    # 1. For each frame, I need to calculate the speed, rho, and distances of pedestrians inside frame
+    frames = np.sort(np.unique(data[:, 1]))
+    frame_start = frames[0]
+    frame_end = frames[-1]
+
+    new_arr = np.empty((1, 8))
+
+    for fr in frames:
+        # Pedestrians inside the frame
+        frame_data = data[data[:, 1] == fr]
+        # A. Sort the row data by the position of pedestrians to know the order of the pedestrians in the
+        # oval corridor (straight trajectories format)
+        frame_data = frame_data[frame_data[:, 2].argsort()]
+
+        # B. Calculate pedestrian velocity
+        if camera_capture == 0:
+            velocity = individual_velocity_top_view(data, frame_data, delta_t, fr, frame_start,
+                                                    frame_end, fps, c)
+            # C. Calculate pedestrians' headway
+            # Calculate the headway by taking the difference between each row x value and the previous
+            headway = np.diff(frame_data[:, 2])
+            # ... for the last pedestrian, we calculate it as
+            headway_last = (c - frame_data[-1, 2]) + (frame_data[0, 2])
+            headway = np.append(headway, headway_last)
+            # D. Calculate pedestrians' rho
+            rho = voronoi_rho_top_view(headway)
+        else:
+            velocity = individual_velocity_side_view(data, frame_data, delta_t, fr, fps)
+            # C. Calculate pedestrians' headway
+            headway = individual_headway_side_view(frame_data)
+            # D. Calculate pedestrians' rho
+            rho = voronoi_rho_side_view(headway)
+
+        # reshape the velocity, headway, rho
+        velocity = np.reshape(velocity, (velocity.size, 1))
+        headway = np.reshape(headway, (headway.size, 1))
+        rho = np.reshape(rho, (rho.size, 1))
+
+        # id, fr, x, y, z, velocity, headway, rho
+        frame_data = np.append(frame_data, velocity, axis=1)
+        frame_data = np.append(frame_data, headway, axis=1)
+        frame_data = np.append(frame_data, rho, axis=1)
+
+        new_arr = np.concatenate((new_arr, frame_data))
+
+    result = new_arr[1:]
+    # drop all nan-value rows
+    result = result[~np.isnan(result).any(axis=1)]
+    return result
+
+def extract_steady_state(data,st,en):
+    rho_v = data[data[:, 1] > st]
+    rho_v = rho_v[rho_v[:, 1] < en]
+
+    return rho_v

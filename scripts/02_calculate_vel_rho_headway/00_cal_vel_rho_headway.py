@@ -67,7 +67,8 @@ if __name__ == "__main__":
             path = "%s/%s_vel_h_rho.txt" % (path_output, file_name)
 
             print("Info:\tCalculating: %s" % p_file)
-            data = read_trajectory_data(p_file)
+            data = read_trajectory_data(p_file) # #id	fr	x	y	z
+
 
             # 1. For each frame, I need to calculate the speed, rho, and distances of pedestrians inside frame
             frames = np.sort(np.unique(data[:, 1]))

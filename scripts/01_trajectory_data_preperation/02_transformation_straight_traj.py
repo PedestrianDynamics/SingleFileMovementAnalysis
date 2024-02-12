@@ -8,7 +8,6 @@ import os
 from typing import List
 
 sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
-from helper import transformation_coord
 from experiments import EXPERIMENTS
 
 import time
@@ -44,6 +43,35 @@ def get_parser_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
+
+def transformation_coord(x, y, length, r):
+    """
+    transform coordinates to straight periodic trajectories (Ziemer2016)
+    :param length: float. length of the oval corridor (circumference) in meter
+    :param r: flowt. Radius
+    :param x: float. x-coordinate
+    :param y: float. y-coordinate
+    :return: float, float. x and y-coordinate
+    """
+    x_trans = None
+    y_trans = None
+
+    if x < 0:
+        arccos_val = (r - y) / math.sqrt((x ** 2) + ((y - r) ** 2))
+        x_trans = (2 * length) + (r * math.pi) + (r * np.arccos(-arccos_val))
+        y_trans = math.sqrt((x ** 2) + ((y - r) ** 2)) - r
+    elif 0 <= x <= length:
+        y_trans = math.sqrt(((y - r) ** 2)) - r
+        if y < r:
+            x_trans = x
+        elif y >= r:
+            x_trans = (2 * length) + (r * math.pi) - x
+    elif x > length:
+        arccos_val = (r - y) / math.sqrt(((x - length) ** 2) + ((y - r) ** 2))
+        x_trans = length + (r * np.arccos(arccos_val))
+        y_trans = math.sqrt(((x - length) ** 2) + ((y - r) ** 2)) - r
+
+    return x_trans, y_trans
 
 if __name__ == "__main__":
     arg: argparse.Namespace = get_parser_args()
