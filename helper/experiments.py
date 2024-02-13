@@ -31,14 +31,14 @@ class ExperimentData:
     unit: int = 1
     ref_x: int = 1
     ref_y: int = 1
-    x_rotate: Optional[int] = 0
-    y_rotate: Optional[int] = 1
-    Min: Optional[float] = None
-    Max: Optional[float] = None
+    x_rotate: int = 0
+    y_rotate: int = 1
+    Min: float = None
+    Max: float = None
     fps: int = 25
     length: float = 0
-    radius: Optional[float] = 0
-    circumference: Optional[float] = 0
+    radius: float = 0
+    circumference: float = 0
     camera_capture: int = 0
     temporal: int = 0
 
