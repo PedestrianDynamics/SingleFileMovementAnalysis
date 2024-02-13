@@ -22,7 +22,6 @@ class ExperimentData:
     - circumference: circumference of the oval set-up.
     - camera_capture: 0 => top_view, 1 => side_view (default=0).
     - temporal: 0=> fps, 1 => time (sec.).
-    - header: related how the trajectories stored in the traj. file. None=>no header, 0=>commented header, 1=> header is
     the first row without comments sign #
     """
 
@@ -42,8 +41,6 @@ class ExperimentData:
     circumference: Optional[float] = 0
     camera_capture: int = 0
     temporal: int = 0
-    header: int = 0
-
 
 EXPERIMENTS = {
     "BaSiGo_germany_Ziemer": ExperimentData(
@@ -232,7 +229,6 @@ EXPERIMENTS = {
         radius=1.65,
         circumference=14.97,
         camera_capture=0,
-        header=1
     ),
     "simulation_pathfinder_25fps": ExperimentData(
         link_data="empty",
@@ -244,7 +240,6 @@ EXPERIMENTS = {
         radius=1.65,
         circumference=14.97,
         camera_capture=0,
-        header=1
     ),
     "sim_jupedsim": ExperimentData(
         link_data="empty",
