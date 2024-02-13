@@ -1,22 +1,19 @@
 # SingleFileMovementAnalysis
 
 ## Introduction
-This repository contains scripts for analyzing single-file movement experiments
-recorded by a top-view (straight, oval), or side-view camera, , and pedestrians walk anticlockwise
+This repository contains scripts and [Jupyter notebooks](/notebooks) to analyze single-file movement experiments recorded by a top-view (straight, oval), or side-view camera.
 
-- Example (top-view camera):
-   - School GymBay, main circle.
-   - [Link](https://ped.fz-juelich.de/da/doku.php?id=start#single-file_motion_of_pupils)
+**Example of top-view experiments**: [Gender Composition in Single-File Experiments](https://doi.org/10.34735/ped.2021.5). The analysis code of the experiment using  [Jupyter notebook](/notebooks/top_view_experiments.ipynb)
 
-   ![gymbaymain](https://user-images.githubusercontent.com/4458692/197472324-e9e65cb2-3468-40f2-b7a3-a79d1d71868c.png)
+<p align="center">   
+   <img src="notebooks/demo_data/croma_oval.png">
+</p>
 
-- Example of (side-view camera)
-   - Influence of gender in single-file movement.
-   - [Link](https://ped.fz-juelich.de/da/doku.php?id=gender_single_file)
+**Example of side-view experiments**: [Influence of gender in single-file movement](https://doi.org/10.34735/ped.2018.5). The analysis code of the experiment using [Jupyter notebook](/notebooks/side_view_experiments.ipynb)
    
-   ![gender_single_file_sample](https://user-images.githubusercontent.com/4458692/197808563-9babbeb4-ae5f-4401-b074-e81118d4f4eb.png)
-
-The analysis results and trajectories (demos) used in this README can be downloaded from [link](https://fz-juelich.sciebo.de/s/6aWC04GmM0mKlTE).
+<p align="center">
+    <img src="notebooks/demo_data/gender_subaih2020.png" alt="Alternative text"/>
+</p>
 
 ## Requirements
 
@@ -32,8 +29,8 @@ pip3 install -r requirements.txt
 | --- | --- |
 |[00_traj_file_format.py](scripts/01_trajectory_data_preperation/00_traj_file_format.py)| (optional) Trajectory data files have several format. This script extract some data from the raw file and unify the format of the data file for the later calculations.|
 |[01_transformation_additional.py](scripts/01_trajectory_data_preperation/01_transformation_additional.py) | (optional) Trajectory data require some transformation (rotation , transition, etc). |
-|[02_transformation_straight_traj.py](scripts/01_trajectory_data_preperation/02_transformation_straight_traj.py) | Transform oval to straight trajectory data according to [Ziemer](https://link.springer.com/chapter/10.1007/978-3-319-33482-0_12). |
-|[00_cal_vel_rho_headway.py](scripts/02_calculate_vel_rho_headway/00_cal_vel_rho_headway.py)|Calculate the individual velocity, headway, and 1D Voronoi density.|
+|[02_transformation_straight_traj.py](scripts/01_trajectory_data_preperation/02_transformation_straight_traj.py) | Transform oval to straight trajectory data according to [Ziemer et al.](https://doi.org/10.48550/arXiv.1602.03053) |
+|[00_cal_vel_rho_headway.py](scripts/02_calculate_vel_rho_headway/00_cal_vel_rho_headway.py)|Calculate the individual velocity, headway, and 1D Voronoi density as [Subaih e al.](https://doi.org/10.1109/ACCESS.2020.2973917)|
 |[01_extract_steady_state_data.py](scripts/02_calculate_vel_rho_headway/01_extract_steady_state_data.py)|Extract and to save only the steady state data|
 |[00_plot_trajectories.py](scripts/03_plotting/00_plot_trajectories.py)|Plot the raw trajectory data or Plot the straight trajectory data after|
 |[02_plot_timeseries_rho_v.py](scripts/03_plotting/02_plot_timeseries_rho_v.py)|Plot timeseries of density and velocity.|
@@ -41,7 +38,7 @@ pip3 install -r requirements.txt
 |[04_plot_data_binning.py](scripts/03_plotting/04_plot_data_binning.py)|Plot bining data (rho-velocity) (headway-velocity)|
 |[05_plot_x_t.py](scripts/03_plotting/05_plot_x_t.py)|Plot the spacial-temporal (x-t) relation|
 
-## Example of analysis results
+## Example of the analysis results
 
 - Determining the steady state [02_plot_timeseries_rho_v.py](scripts/03_plotting/02_plot_timeseries_rho_v.py)
 
@@ -75,7 +72,7 @@ pip3 install -r requirements.txt
 
 ![schoole_GymBay_main_binning_rho_vel](https://user-images.githubusercontent.com/4458692/197457504-46f04bd9-1b74-4d31-aeac-558d1161bca5.png)
 
-## Example of experiments
+<!-- ## Example of experiments
 
 |Experiment|Circumference (m)|Length of straight part (m)|Measurement area length (m)|Radius (m)|Frame per sec. (camera)|
 | --- | --- | --- | --- | --- |  --- |
@@ -88,7 +85,7 @@ pip3 install -r requirements.txt
 |motivation_germany_lukowski|28.84|5|2|-|25|
 |genderCroMa_germany_paetzke|14.96|2.3|-|1.65|25|
 
-![penup_20221031_094831](https://user-images.githubusercontent.com/4458692/198972539-8f6fb110-e051-4316-968f-b879144e9fd7.jpg)
+![penup_20221031_094831](https://user-images.githubusercontent.com/4458692/198972539-8f6fb110-e051-4316-968f-b879144e9fd7.jpg) -->
 
 ## Note
 1. To run script, write on the command line: 
