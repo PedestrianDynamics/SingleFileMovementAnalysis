@@ -1,7 +1,7 @@
 # SingleFileMovementAnalysis
 
 ## Introduction
-This repository contains scripts and [Jupyter notebooks](/notebooks) to analyze single-file movement experiments recorded by a top-view (straight, oval), or side-view camera.
+This repository contain scripts and [Jupyter notebooks](/notebooks) to analyze single-file movement experiments recorded by a top-view (straight, oval), or side-view camera.
 
 **Example of top-view experiments**: [Gender Composition in Single-File Experiments](https://doi.org/10.34735/ped.2021.5). The analysis code of the experiment using  [Jupyter notebook](/notebooks/top_view_experiments.ipynb)
 
