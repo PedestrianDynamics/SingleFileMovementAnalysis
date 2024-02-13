@@ -22,7 +22,6 @@ class ExperimentData:
     - circumference: circumference of the oval set-up.
     - camera_capture: 0 => top_view, 1 => side_view (default=0).
     - temporal: 0=> fps, 1 => time (sec.).
-    the first row without comments sign #
     """
 
     link_data: Optional[str] = "empty"
