@@ -14,12 +14,6 @@ class ExperimentData:
     - ref_y: scalar to reflect y-axis. -1 to reflect.
     - x_rotate: index of the array. Rotation 90 degree (to make the x->y and the y ->x).
     - y_rotate: index of the array. Rotation 90 degree (to make the x->y and the y ->x).
-    - id_col_index: index of the column contains ped. ID values. None=the traj. file don't contain the value.
-    - fr_col_index: index of the column contains frame ID values. None=the traj. file don't contain the value.
-    - x_col_index: index of the column contains x value.
-    - y_col_index: index of the column contains y value.
-    - z_col_index: index of the column contains z value. None=the traj. file don't contain the value.
-    - additional_col_index: index of the column want to delete. None=>nothing to delete, you can add list of indexes.
     - Min: min boundary of the straight area (measurement area) (if applicable).
     - Max: max boundary of the straight area (measurement area) (if applicable).
     - fps: camera capture frame per second.
@@ -28,7 +22,6 @@ class ExperimentData:
     - circumference: circumference of the oval set-up.
     - camera_capture: 0 => top_view, 1 => side_view (default=0).
     - temporal: 0=> fps, 1 => time (sec.).
-    - delimiter: related how the trajectories stored in the traj. file. " " OR ,
     - header: related how the trajectories stored in the traj. file. None=>no header, 0=>commented header, 1=> header is
     the first row without comments sign #
     """
@@ -41,12 +34,6 @@ class ExperimentData:
     ref_y: int = 1
     x_rotate: Optional[int] = 0
     y_rotate: Optional[int] = 1
-    id_col_index: int = 0
-    fr_col_index: int = 1
-    x_col_index: int = 2
-    y_col_index: int = 3
-    z_col_index: int = 4
-    additional_col_index: Optional[list] = None
     Min: Optional[float] = None
     Max: Optional[float] = None
     fps: int = 25
@@ -55,7 +42,6 @@ class ExperimentData:
     circumference: Optional[float] = 0
     camera_capture: int = 0
     temporal: int = 0
-    delimiter: str = " "
     header: int = 0
 
 
@@ -88,7 +74,6 @@ EXPERIMENTS = {
         link_data="https://doi.org/10.34735/ped.2014.2",
         shift_x=1.25,
         shift_y=1.85,
-        delimiter='\t',
         x_rotate=2,
         y_rotate=3,
         unit=1,
@@ -178,7 +163,6 @@ EXPERIMENTS = {
     ),
     "genderCroMa_setupRight_germany_paetzke": ExperimentData(
         link_data="empty",
-        delimiter='\t',
         shift_x=-1.7,
         shift_y=4.6,
         ref_y=-1,
@@ -192,7 +176,6 @@ EXPERIMENTS = {
     ),
     "genderCroMa_setupLeft_germany_paetzke": ExperimentData(
         link_data="empty",
-        delimiter='\t',
         shift_x=-1.7,
         shift_y=-1.3,
         ref_y=-1,
@@ -249,13 +232,6 @@ EXPERIMENTS = {
         radius=1.65,
         circumference=14.97,
         camera_capture=0,
-        id_col_index=1,
-        fr_col_index=None,
-        x_col_index=2,
-        y_col_index=3,
-        z_col_index=None,
-        additional_col_index=[0],
-        delimiter=",",
         header=1
     ),
     "simulation_pathfinder_25fps": ExperimentData(
@@ -268,24 +244,11 @@ EXPERIMENTS = {
         radius=1.65,
         circumference=14.97,
         camera_capture=0,
-        id_col_index=1,
-        fr_col_index=None,
-        x_col_index=2,
-        y_col_index=3,
-        z_col_index=None,
-        additional_col_index=[0],
-        delimiter=",",
         header=1
     ),
     "sim_jupedsim": ExperimentData(
         link_data="empty",
         unit=1,
-        id_col_index=1,
-        fr_col_index=0,
-        x_col_index=2,
-        y_col_index=3,
-        z_col_index=None,
-        additional_col_index=[4, 5],
         fps=25,
         length=2.3,
         radius=1.65,
@@ -295,7 +258,6 @@ EXPERIMENTS = {
         link_data="empty",
         unit=1,
         fps=25,
-        delimiter='\t',
         ref_x=-1,
         ref_y=-1,
         x_rotate=1,
@@ -310,7 +272,6 @@ EXPERIMENTS = {
         link_data="empty",
         unit=1,
         fps=25,
-        delimiter='\t',
         ref_x=-1,
         ref_y=-1,
         x_rotate=1,
@@ -325,7 +286,6 @@ EXPERIMENTS = {
         link_data="empty",
         unit=1,
         fps=25,
-        delimiter='\t',
         ref_x=-1,
         shift_x=1.3,
         shift_y=1.5,
@@ -341,7 +301,6 @@ EXPERIMENTS = {
         ref_y=-1,
         x_rotate=3,
         y_rotate=2,
-        delimiter='\t',
         shift_x=1.3,
         shift_y=1.5,
         length=2.3,
@@ -353,10 +312,8 @@ EXPERIMENTS = {
         unit=1,
         fps=25,
         ref_x=-1,
-        # ref_y=-1,
         x_rotate=3,
         y_rotate=2,
-        delimiter='\t',
         shift_x=1.3,
         shift_y=1.5,
         length=2.3,
@@ -367,10 +324,7 @@ EXPERIMENTS = {
         link_data="empty",
         unit=1,
         fps=25,
-        # ref_x=-1,
         ref_y=-1,
-        # x_rotate=1,
-        # y_rotate=0,
         shift_x=1.15,
         shift_y=1.8,
         length=2.3,
@@ -381,11 +335,7 @@ EXPERIMENTS = {
         link_data="empty",
         unit=1,
         fps=25,
-        delimiter='\t',
-        # ref_x=-1,
         ref_y=-1,
-        # x_rotate=1,
-        # y_rotate=0,
         shift_x=1,
         shift_y=8,
         length=2.3,
@@ -396,11 +346,7 @@ EXPERIMENTS = {
         link_data="empty",
         unit=1,
         fps=25,
-        # ref_x=-1,
         ref_y=-1,
-        # x_rotate=1,
-        # y_rotate=0,
-        # delimiter='\t',
         shift_x=1.3,
         shift_y=1.5,
         length=2.3,
@@ -411,11 +357,6 @@ EXPERIMENTS = {
         link_data="empty",
         unit=1,
         fps=25,
-        # ref_x=-1,
-        # ref_y=-1,
-        # x_rotate=1,
-        # y_rotate=0,
-        # delimiter='\t',
         shift_x=1.3,
         shift_y=1.5,
         length=2.3,
@@ -424,12 +365,8 @@ EXPERIMENTS = {
     ),
         "germany_right_MC_2": ExperimentData(
         link_data="empty",
-        delimiter='\t',
         shift_x=1.7,
         shift_y=-4.6,
-        # ref_y=-1,
-        # x_rotate=1,
-        # y_rotate=0,
         fps=25,
         length=2.3,
         radius=1.65,
@@ -438,12 +375,8 @@ EXPERIMENTS = {
     ),
     "germany_left_MC_2": ExperimentData(
         link_data="empty",
-        delimiter='\t',
         shift_x=1.7,
         shift_y=1.3,
-        # ref_y=-1,
-        # x_rotate=1,
-        # y_rotate=0,
         fps=25,
         length=2.3,
         radius=1.65,
@@ -454,7 +387,6 @@ EXPERIMENTS = {
         link_data="empty",
         unit=1,
         fps=25,
-        delimiter='\t',
         ref_x=-1,
         shift_x=1.3,
         shift_y=1.5,
