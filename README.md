@@ -42,35 +42,50 @@ pip3 install -r requirements.txt
 
 - Determining the steady state [02_plot_timeseries_rho_v.py](scripts/03_plotting/02_plot_timeseries_rho_v.py)
 
-![timeseries_rho_vel](https://user-images.githubusercontent.com/4458692/197458149-0b1a230c-38df-4303-b6a1-bd1e22ee4b88.png)
+<p align="center"> 
+   <img src="https://user-images.githubusercontent.com/4458692/197458149-0b1a230c-38df-4303-b6a1-bd1e22ee4b88.png">
+</p>
 
 
 - The fundamental diagram (FD, rho-vel), and headway-velocity [03_plot_rho_h_vel.py](scripts/03_plotting/03_plot_rho_h_vel.py)
 
-![schoolGymBay_rho_vel](https://user-images.githubusercontent.com/4458692/197454439-f8ad5ae2-10a6-453e-8251-d7edf31d6803.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/4458692/197454439-f8ad5ae2-10a6-453e-8251-d7edf31d6803.png">
+</p>
 
-![schoolGymBay_h_vel](https://user-images.githubusercontent.com/4458692/197454455-d8ddcd18-165d-4185-9f73-7ff91f85109d.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/4458692/197454455-d8ddcd18-165d-4185-9f73-7ff91f85109d.png">
+</p>
 
 
 - The raw trajectories [00_plot_traj_raw.py](scripts/03_plotting/00_plot_trajectories.py)
 
-![GymBay_main_15_1](https://user-images.githubusercontent.com/4458692/197454570-d407cd02-980c-454a-b352-d7cda753de8a.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/4458692/197454570-d407cd02-980c-454a-b352-d7cda753de8a.png">
+<p>
 
 
 - The trajectories after transformation [00_plot_traj_raw.py](scripts/03_plotting/00_plot_trajectories.py)
 
-![GymBay_main_15_1_transformation_additional_straight_traj](https://user-images.githubusercontent.com/4458692/197454619-3804368f-82b1-4eaa-a725-42eb95e2e1b2.png)
-
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/4458692/197454619-3804368f-82b1-4eaa-a725-42eb95e2e1b2.png">
+</p>
 
 - The spacial-temporal (x-t) relation [05_plot_x_t.py](scripts/03_plotting/05_plot_x_t.py)
 
-![GymBay_main_15_1_transformation_additional_straight_traj_x_t](https://user-images.githubusercontent.com/4458692/197456105-15032699-9ef1-4c03-b1ca-d0e137260d9a.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/4458692/197456105-15032699-9ef1-4c03-b1ca-d0e137260d9a.png">
+<p>
 
 - Binning data (rho-velocity) (headway-velocity) [04_plot_data_binning.py](scripts/03_plotting/04_plot_data_binning.py)
 
-![schoole_GymBay_main_binning_h_vel](https://user-images.githubusercontent.com/4458692/197457493-2c1a78f8-96ff-4b4c-93da-cfce57e95497.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/4458692/197457493-2c1a78f8-96ff-4b4c-93da-cfce57e95497.png">
+</p>
 
-![schoole_GymBay_main_binning_rho_vel](https://user-images.githubusercontent.com/4458692/197457504-46f04bd9-1b74-4d31-aeac-558d1161bca5.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/4458692/197457504-46f04bd9-1b74-4d31-aeac-558d1161bca5.png">
+</p>
 
 <!-- ## Example of experiments
 
