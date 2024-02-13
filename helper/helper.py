@@ -192,7 +192,7 @@ def individual_headway_side_view(frame_data):
     # initialize headway array with NaN values
     headway = np.full((1, len(frame_data)), np.NAN)[0]
 
-    # 1. sort the pedestrians inside the current data frame by the position (0 to 3.14)
+    # 1. sort the pedestrians inside the current data frame by the position (0 to Max)
     frame_data = frame_data[frame_data[:, 2].argsort()]
 
     if len(frame_data) == 0:
