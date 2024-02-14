@@ -15,6 +15,8 @@ This repository contain scripts and [Jupyter notebooks](/notebooks) to analyze s
     <img src="notebooks/demo_data/gender_subaih2020.png" alt="Alternative text"/>
 </p>
 
+> **NOTE:** the demo data for both examples can be downloaded from the [Pedestrian Dynamics Data Archive](https://ped.fz-juelich.de/da/doku.php?id=start) then store it in a directory the following repository [demo_data](/notebooks/demo_data).
+
 ## Requirements
 
 Download and install the requirements with
