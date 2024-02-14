@@ -158,7 +158,7 @@ EXPERIMENTS = {
         camera_capture=1
     ),
     "genderCroMa_setupRight_germany_paetzke": ExperimentData(
-        link_data="empty",
+        link_data="https://doi.org/10.34735/ped.2021.5",
         shift_x=-1.7,
         shift_y=4.6,
         ref_y=-1,
@@ -171,7 +171,7 @@ EXPERIMENTS = {
         camera_capture=0
     ),
     "genderCroMa_setupLeft_germany_paetzke": ExperimentData(
-        link_data="empty",
+        link_data="https://doi.org/10.34735/ped.2021.5",
         shift_x=-1.7,
         shift_y=-1.3,
         ref_y=-1,
