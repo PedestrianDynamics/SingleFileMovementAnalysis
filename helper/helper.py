@@ -179,7 +179,7 @@ def individual_velocity_side_view(data: npt.NDArray[np.float64], frame_data: npt
 
     return velocity
 
-def individual_headway_side_view(frame_data: npt.NDArray[np.float64], c: float) -> npt.NDArray[np.float64]:
+def individual_headway_side_view(frame_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
     """
     Calculate the headway (distance in front) between two successive pedestrians
     :param frame_data: ndarray. Data of pedestrians inside the frame
@@ -292,7 +292,7 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str) -> npt.NDAr
 
     return arr
 
-def calculate_speed_density(data: npt.NDArray[np.float64], fps: int, c: float, camera_capture: int, delta_t: float, experiment_name: str) -> npt.NDArray[np.float64]:
+def calculate_speed_density_headway(data: npt.NDArray[np.float64], fps: int, c: float, camera_capture: int, delta_t: float) -> npt.NDArray[np.float64]:
     """
     calculate the speed and density of pedestrians in the experiment
     :param data: numpy array. Trajectory data
