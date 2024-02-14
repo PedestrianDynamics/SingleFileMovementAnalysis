@@ -13,12 +13,12 @@ sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
 from experiments import EXPERIMENTS
 
 
-def transformation_coord(data, length, r):
+def transformation_coord(data: npt.NDArray[np.float64], length: float, r: float) -> npt.NDArray[np.float64]:
     """
     transform coordinates to straight periodic trajectories (Ziemer2016)
+    :param data_transformation_additional: numpy array.
     :param length: float. length of the oval corridor (circumference) in meter
     :param r: flowt. Radius
-    :param data_transformation_additional: numpy array.
     :return: float, float. x and y-coordinate
     """
     data_new = np.empty((len(data), 2))
@@ -49,8 +49,7 @@ def transformation_coord(data, length, r):
 
     return data_new
 
-
-def read_trajectory_data(path):
+def read_trajectory_data(path: str) -> npt.NDArray[np.float64]:
     """
     Read the trajectory data from text file
     :param path: path to the trajectory text file
@@ -59,8 +58,7 @@ def read_trajectory_data(path):
     data = np.loadtxt(path, usecols=(0, 1, 2, 3, 4), comments="#")
     return data
 
-
-def individual_velocity_top_view(data, frame_data, delta_t, frame_current, frame_start, frame_end, fps, c):
+def individual_velocity_top_view(data: npt.NDArray[np.float64], frame_data: npt.NDArray[np.float64], delta_t: float, frame_current: int, frame_start: int, frame_end: int, fps: int, c: float) -> npt.NDArray[np.float64]:
     """
     to calculate the individual velocity for top view experiments (value + direction) of pedestrians
     :param data: ndarray. Trajectory dataset
@@ -128,8 +126,7 @@ def individual_velocity_top_view(data, frame_data, delta_t, frame_current, frame
 
     return velocity
 
-
-def individual_velocity_side_view(data, frame_data, delta_t, frame_current, fps):
+def individual_velocity_side_view(data: npt.NDArray[np.float64], frame_data: npt.NDArray[np.float64], delta_t: float, frame_current: int, fps: int) -> npt.NDArray[np.float64]:
     """
     to calculate the individual velocity for side view experiments (value + direction) of pedestrians
     :param data: ndarray. Trajectory dataset
@@ -182,11 +179,11 @@ def individual_velocity_side_view(data, frame_data, delta_t, frame_current, fps)
 
     return velocity
 
-
-def individual_headway_side_view(frame_data):
+def individual_headway_side_view(frame_data: npt.NDArray[np.float64], c: float) -> npt.NDArray[np.float64]:
     """
     Calculate the headway (distance in front) between two successive pedestrians
     :param frame_data: ndarray. Data of pedestrians inside the frame
+    :param c: float. circumference of the oval corridor
     :return: numpy array. Headway
     """
     # initialize headway array with NaN values
@@ -206,8 +203,7 @@ def individual_headway_side_view(frame_data):
 
     return headway
 
-
-def reorder_arr(arr, col):
+def reorder_arr(arr: npt.NDArray[np.float64], col: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
     """
     reorder the ndarray values of ans array based on col. value
     :param col: ndnumpy array
@@ -221,8 +217,7 @@ def reorder_arr(arr, col):
 
     return arr[order, :]
 
-
-def voronoi_rho_top_view(headway):
+def voronoi_rho_top_view(headway: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
     """
     to calculate the voronoi rho of pedestrians in single-file movement experiments
     :param headway: ndarray. Headway
@@ -237,7 +232,7 @@ def voronoi_rho_top_view(headway):
     return rho
 
 
-def voronoi_rho_side_view(headway):
+def voronoi_rho_side_view(headway: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]: 
     """
     to calculate the voronoi rho of pedestrians in single-file movement experiments
     :param headway: ndarray. Headway
@@ -256,14 +251,13 @@ def voronoi_rho_side_view(headway):
     rho = 2 / denominator
     return rho
 
-
-def rotate_array(arr, n, d):
+def rotate_array(arr: npt.NDArray[np.float64], n: int, d: int) -> npt.NDArray[np.float64]:
     """
     rotate a numpy array (the last element will be the first)
     :param arr: list to rotate
     :param n: length of the arr
     :param d: number of steps to rotate
-    :return:
+    :return: rotated list
     """
     temp = []
     i = 0
@@ -283,7 +277,7 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str) -> npt.NDAr
     apply the additional transformation which is specific for each experiment
     :param arr: trajectory data
     :param experiment_name: experiment name
-    :return:
+    :return: processed trajectory data
     """
     e = EXPERIMENTS[experiment_name]
 
@@ -298,8 +292,17 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str) -> npt.NDAr
 
     return arr
 
-
-def calculate_speed_density_headway(data: npt.NDArray[np.float64], fps: int, c: float, camera_capture: int, delta_t: float) -> npt.NDArray[np.float64]:
+def calculate_speed_density(data: npt.NDArray[np.float64], fps: int, c: float, camera_capture: int, delta_t: float, experiment_name: str) -> npt.NDArray[np.float64]:
+    """
+    calculate the speed and density of pedestrians in the experiment
+    :param data: numpy array. Trajectory data
+    :param fps: int. camera frame per second
+    :param c: float. circumference of the oval corridor
+    :param camera_capture: int. 0 => top_view, 1 => side_view (default=0)
+    :param delta_t: float. short time constant (to smooth the traj. in order to avoid fluctuations of ped. stepping)
+    :param experiment_name: str. experiment name
+    :return: numpy array. speed and density of pedestrians
+    """
     # 1. For each frame, I need to calculate the speed, rho, and distances of pedestrians inside frame
     frames = np.sort(np.unique(data[:, 1]))
     frame_start = frames[0]
@@ -350,7 +353,14 @@ def calculate_speed_density_headway(data: npt.NDArray[np.float64], fps: int, c: 
     result = result[~np.isnan(result).any(axis=1)]
     return result
 
-def extract_steady_state(data,st,en):
+def extract_steady_state(data: npt.NDArray[np.float64], st: float, en: float) -> npt.NDArray[np.float64]:
+    """ 
+    extract the steady-state data from the dataset  
+    :param data: numpy array.
+    :param st: float. start value
+    :param en: float. end value
+    :return: numpy array.
+    """
     rho_v = data[data[:, 1] > st]
     rho_v = rho_v[rho_v[:, 1] < en]
 
