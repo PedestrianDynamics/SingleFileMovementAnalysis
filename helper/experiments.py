@@ -12,8 +12,8 @@ class ExperimentData:
     - Unit: 100 if data are in cm. Otherwise 1.
     - ref_x: scalar to reflect x-axis. -1 to reflect.
     - ref_y: scalar to reflect y-axis. -1 to reflect.
-    - x_rotate: index of the array. Rotation 90 degree (to make the x->y and the y ->x).
-    - y_rotate: index of the array. Rotation 90 degree (to make the x->y and the y ->x).
+    - x_rotate: index of the array. Rotation 90 degrees (to make the x->y and the y ->x).
+    - y_rotate: index of the array. Rotation 90 degrees (to make the x->y and the y ->x).
     - Min: min boundary of the straight area (measurement area) (if applicable).
     - Max: max boundary of the straight area (measurement area) (if applicable).
     - fps: camera capture frame per second.
@@ -200,7 +200,7 @@ EXPERIMENTS = {
         link_data="empty",
         shift_x=2.5,
         shift_y=2.5,
-        ref_x=-1,  # because this experiment is clockwise
+        ref_x=-1, 
         x_rotate=2,
         y_rotate=3,
         fps=25,
