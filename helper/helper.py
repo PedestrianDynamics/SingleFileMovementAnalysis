@@ -287,9 +287,6 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str) -> npt.NDAr
     """
     e = EXPERIMENTS[experiment_name]
 
-    if (e.Min is not None) and (e.Max is not None):  # data inside measurement area (unique for each experiment)
-        arr = arr[((arr[:, 0] / e.unit) >= e.Min) & ((arr[:, 0] / e.unit) <= e.Max)]
-
     # transformation for x and y values (unique for each experiment)
     x = arr[:, e.x_rotate].copy()
     y = arr[:, e.y_rotate].copy()
@@ -300,6 +297,7 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str) -> npt.NDAr
     arr[:, 1] = ((e.ref_y * y) / e.unit) + e.shift_y
 
     return arr
+
 
 def calculate_speed_density_headway(data: npt.NDArray[np.float64], fps: int, c: float, camera_capture: int, delta_t: float) -> npt.NDArray[np.float64]:
     # 1. For each frame, I need to calculate the speed, rho, and distances of pedestrians inside frame

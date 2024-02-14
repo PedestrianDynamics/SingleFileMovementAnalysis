@@ -30,8 +30,8 @@ class ExperimentData:
     unit: int = 1
     ref_x: int = 1
     ref_y: int = 1
-    x_rotate: int = 0
-    y_rotate: int = 1
+    x_rotate: int = 0 # x index in the data array
+    y_rotate: int = 1 # y index in the data array
     Min: float = None
     Max: float = None
     fps: int = 25

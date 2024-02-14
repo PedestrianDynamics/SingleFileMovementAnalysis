@@ -65,6 +65,7 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str) -> npt.NDAr
     e = EXPERIMENTS[experiment_name]
 
     if (e.Min is not None) and (e.Max is not None):  # data inside measurement area (unique for each experiment)
+        # 2 = x
         arr = arr[((arr[:, 2] / e.unit) >= e.Min) & ((arr[:, 2] / e.unit) <= e.Max)]
 
     # transformation for x and y values (unique for each experiment)
