@@ -49,14 +49,14 @@ def transformation_coord(data: npt.NDArray[np.float64], length: float, r: float)
 
     return data_new
 
-def read_trajectory_data(path: str) -> npt.NDArray[np.float64]:
-    """
-    Read the trajectory data from text file
-    :param path: path to the trajectory text file
-    :return: numpy array contains the trajectory data
-    """
-    data = np.loadtxt(path, usecols=(0, 1, 2, 3, 4), comments="#")
-    return data
+# def read_trajectory_data(path: str) -> npt.NDArray[np.float64]:
+#     """
+#     Read the trajectory data from text file
+#     :param path: path to the trajectory text file
+#     :return: numpy array contains the trajectory data
+#     """
+#     data = np.loadtxt(path, usecols=(0, 1, 2, 3, 4), comments="#")
+#     return data
 
 def individual_velocity_top_view(data: npt.NDArray[np.float64], frame_data: npt.NDArray[np.float64], delta_t: float, frame_current: int, frame_start: int, frame_end: int, fps: int, c: float) -> npt.NDArray[np.float64]:
     """
@@ -365,3 +365,4 @@ def extract_steady_state(data: npt.NDArray[np.float64], st: float, en: float) ->
     rho_v = rho_v[rho_v[:, 1] < en]
 
     return rho_v
+
