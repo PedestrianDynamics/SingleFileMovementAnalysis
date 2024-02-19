@@ -8,5 +8,3 @@ __pycache__/
 .idea/
 __init__.py
 plots_style.py
-notebooks/demo_data/genderFemale_germany_paetzke2023
-notebooks/demo_data/genderMixedAlternating_palestine_subaih2019
