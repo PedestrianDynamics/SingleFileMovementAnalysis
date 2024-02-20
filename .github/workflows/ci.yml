@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ '3.10', '3.11' , '3.12' ]
-    runs-on: ${{ ubuntu-latest }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -29,13 +29,16 @@ jobs:
       - name: Install dependencies
         run: | 
           pip install --upgrade pip
-          pip install -r requirements.txt
           pip install --upgrade pip jupyter nbconvert nbformat
+
+      - name: Install single file movement analysis
+        run: |
+          pip install .
 
       - name: Run top view notebook
         run: |
-          jupyter nbconvert --to notebook --execute scripts/top_view_experiments.ipynb
+          jupyter nbconvert --to notebook --execute notebooks/top_view_experiments.ipynb
 
       - name: Run side view notebook
         run: |
-          jupyter nbconvert --to notebook --execute scripts/side_view_experiments.ipynb
+          jupyter nbconvert --to notebook --execute notebooks/side_view_experiments.ipynb

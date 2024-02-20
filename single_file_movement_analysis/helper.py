@@ -7,10 +7,7 @@ import numpy as np
 from scipy.ndimage.interpolation import shift
 import numpy.typing as npt
 
-import os
-import sys
-sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
-from experiments import EXPERIMENTS
+from .experiments import EXPERIMENTS
 
 
 def transformation_coord(data: npt.NDArray[np.float64], length: float, r: float) -> npt.NDArray[np.float64]:

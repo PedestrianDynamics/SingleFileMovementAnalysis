@@ -2,14 +2,11 @@
 ©Rudina Subaih
 """
 import argparse
-import os
-import sys
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
-from experiments import EXPERIMENTS
+from single_file_movement_analysis.experiments import EXPERIMENTS
 
 
 def get_parser_args():
@@ -41,7 +38,7 @@ def get_parser_args():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
     args = get_parser_args()
     path_file = args.path
     exp_name = args.expName
@@ -73,3 +70,7 @@ if __name__ == "__main__":
     plt.savefig("%s/%s_x_t.pdf" % (path_output, file_name))
     plt.savefig("%s/%s_x_t.png" % (path_output, file_name))
     plt.close()
+
+
+if __name__ == "__main__":
+    main()

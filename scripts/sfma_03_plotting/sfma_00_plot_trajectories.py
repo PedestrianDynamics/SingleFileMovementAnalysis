@@ -3,17 +3,11 @@
 Visualise the "raw trajectories" spatially (x-y) (oval trajectories)
 Visualise the "straight trajectories" spatially (x-y)
 """
-import os
-import sys
 import argparse
+import os
 
 import matplotlib.pyplot as plt
 import numpy as np
-
-sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
-from experiments import EXPERIMENTS
-
-import sqlite3
 
 
 def get_parser_args():
@@ -47,7 +41,7 @@ def get_parser_args():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
     arg = get_parser_args()
     path = arg.path
     files = arg.fileName
@@ -86,3 +80,7 @@ if __name__ == "__main__":
         plt.savefig("%s/%s.pdf" % (path_output, file_name))
         plt.savefig("%s/%s.png" % (path_output, file_name))
         plt.close()
+
+
+if __name__ == "__main__":
+    main()

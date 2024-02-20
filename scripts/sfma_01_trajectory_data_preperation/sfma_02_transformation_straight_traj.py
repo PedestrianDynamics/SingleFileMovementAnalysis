@@ -7,11 +7,11 @@ import numpy as np
 import os
 from typing import List
 
-sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
-from experiments import EXPERIMENTS
+from single_file_movement_analysis.experiments import EXPERIMENTS
 
 import time
 import argparse
+import math
 
 
 def get_parser_args() -> argparse.Namespace:
@@ -73,7 +73,8 @@ def transformation_coord(x, y, length, r):
 
     return x_trans, y_trans
 
-if __name__ == "__main__":
+
+def main():
     arg: argparse.Namespace = get_parser_args()
     path: str = arg.path
     files: List[str] = arg.fileName
@@ -115,3 +116,7 @@ if __name__ == "__main__":
     # print the difference between start
     # and end time in milli. secs
     print("The time of execution of above program is :", (end - start) * 10 ** 3, "ms")
+
+
+if __name__ == "__main__":
+    main()

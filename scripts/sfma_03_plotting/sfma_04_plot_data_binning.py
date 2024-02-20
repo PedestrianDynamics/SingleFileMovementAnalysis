@@ -80,7 +80,7 @@ def binning_data(x_values, y_values, lb, ax):
                 markerfacecolor="None")
 
 
-if __name__ == "__main__":
+def main():
     arg = get_parser_args()
     path_source = arg.path
     fig_name = arg.figName
@@ -123,3 +123,7 @@ if __name__ == "__main__":
     fig2.savefig("%s/%s_binning_rho_vel.png" % (path_output, fig_name))
     fig2.savefig("%s/%s_binning_rho_vel.pdf" % (path_output, fig_name))
     plt.close(fig2)
+
+
+if __name__ == "__main__":
+    main()
