@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["single_file_movement_analysis", "scripts"]
+namespaces = true
+
+[project]
+name = "single_file_movement_analysis"
+version = "0.1.0"
+description = "Tool for analyzing single-file movement experiments recorded by a top-view, or side-view camera."
+authors = [
+    {name = "Rudina Subaih"},
+]
+license = {text = "MIT License"}
+readme = "README.md"
+keywords = ["pedestrian-behavior", "pedestrian-dynamics", "single-file-movement", "pedestrian-analysis",]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "numpy~=1.21",
+    "matplotlib~=3.5",
+    "pandas~=2.0",
+    "scipy~=1.9",
+]
+
+[project.urls]
+repository = "https://github.com/PedestrianDynamics/SingleFileMovementAnalysis"
+
+[project.scripts]
+sfma_01_00_traj_file_format = "scripts.sfma_01_trajectory_data_preperation.sfma_00_traj_file_format:main"
+sfma_01_01_transformation_additional = "scripts.sfma_01_trajectory_data_preperation.sfma_01_transformation_additional:main"
+sfma_01_02_transformation_straight_traj = "scripts.sfma_01_trajectory_data_preperation.sfma_02_transformation_straight_traj:main"
+sfma_02_00_cal_vel_rho_headway = "scripts.sfma_02_calculate_vel_rho_headway.sfma_00_cal_vel_rho_headway:main"
+sfma_02_01_extract_steady_state_data = "scripts.sfma_02_calculate_vel_rho_headway.sfma_01_extract_steady_state_data:main"
+sfma_00_plot_trajectories = "scripts.sfma_03_plotting.sfma_00_plot_trajectories:main"
+sfma_02_plot_timeseries_rho_v = "scripts.sfma_03_plotting.sfma_02_plot_timeseries_rho_v:main"
+sfma_02_03_plot_rho_h_vel = "scripts.sfma_03_plotting.sfma_03_plot_rho_h_vel:main"
+sfma_02_04_plot_data_binning = "scripts.sfma_03_plotting.sfma_04_plot_data_binning:main"
+sfma_02_05_plot_x_t = "scripts.sfma_03_plotting.sfma_05_plot_x_t:main"
+

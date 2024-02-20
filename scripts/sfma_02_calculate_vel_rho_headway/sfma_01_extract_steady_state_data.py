@@ -46,7 +46,7 @@ def get_parser_args():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
     args = get_parser_args()
     path = args.path  # The path of the rho_v directory
     files = args.fileName  # Names of the rho_v files
@@ -73,3 +73,7 @@ if __name__ == "__main__":
             newline="\r\n",
             fmt=fmt
         )
+
+
+if __name__ == "__main__":
+    main()

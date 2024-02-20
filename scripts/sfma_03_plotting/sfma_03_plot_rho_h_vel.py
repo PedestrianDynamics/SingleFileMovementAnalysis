@@ -51,7 +51,7 @@ def get_parser_args():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
     args = get_parser_args()
     path = args.path
     files = args.fileName
@@ -93,3 +93,7 @@ if __name__ == "__main__":
     fig2.savefig("%s/%s_rho_vel.png" % (path_output, fig_name))
     fig2.savefig("%s/%s_rho_vel.pdf" % (path_output, fig_name))
     plt.close(fig2)
+
+
+if __name__ == "__main__":
+    main()

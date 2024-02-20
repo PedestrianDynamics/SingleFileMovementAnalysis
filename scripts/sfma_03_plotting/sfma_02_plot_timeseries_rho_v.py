@@ -33,7 +33,7 @@ def get_parser_args():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
     args = get_parser_args()
     path = args.path
     path_output = args.pathOutput
@@ -58,3 +58,7 @@ if __name__ == "__main__":
     plt.savefig("%s/%s_timeseries_rho_vel.pdf" % (path_output, fig_name))
     plt.savefig("%s/%s_timeseries_rho_vel.png" % (path_output, fig_name))
     plt.close()
+
+
+if __name__ == "__main__":
+    main()

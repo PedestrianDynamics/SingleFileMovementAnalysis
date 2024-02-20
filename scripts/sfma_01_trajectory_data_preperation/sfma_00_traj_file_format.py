@@ -89,7 +89,8 @@ def get_parser_args() -> argparse.Namespace:
 
 
 def file_format(traj_data: np.ndarray, id_col_index: int, fr_col_index: int,
-                x_col_index: int, y_col_index: int, z_col_index: Optional[int], gender_index: Optional[int], time_index: Optional[float]) -> np.ndarray:
+                x_col_index: int, y_col_index: int, z_col_index: Optional[int], gender_index: Optional[int],
+                time_index: Optional[float]) -> np.ndarray:
     """
     Make the format of the trajectory file
     #id  frame   x   y   z
@@ -113,7 +114,6 @@ def file_format(traj_data: np.ndarray, id_col_index: int, fr_col_index: int,
 
     if y_col_index is None:
         raise ValueError('ERROR: you have to add y-coordinate to the trajectory file.')
-
 
     # Specify the column indices by which you want to sort the rows
     column_indices = (id_col_index, x_col_index)
@@ -149,7 +149,8 @@ def file_format(traj_data: np.ndarray, id_col_index: int, fr_col_index: int,
     else:
         time_data = frames = traj_data[:, time_index]
     # Create a 2D NumPy matrix by stacking the 1D arrays vertically
-    traj_data = np.column_stack((traj_data[:, id_col_index], frames, traj_data[:, x_col_index], traj_data[:, y_col_index], z, gender_data, time_data))
+    traj_data = np.column_stack((traj_data[:, id_col_index], frames, traj_data[:, x_col_index],
+                                 traj_data[:, y_col_index], z, gender_data, time_data))
 
     # sort based od id and fr because the previous data appears not aus_mix_sorted
     traj_data = traj_data[np.lexsort((traj_data[:, 1], traj_data[:, 0]))]
@@ -174,7 +175,7 @@ def read_sqlite_file(traj_path: str, traj_file_name: str) -> pd.DataFrame:
     return output_data
 
 
-if __name__ == "__main__":
+def main():
     arg: argparse.Namespace = get_parser_args()
     path: str = arg.path
     files: List[str] = arg.fileName
@@ -218,3 +219,7 @@ if __name__ == "__main__":
             newline="\r\n",
             fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%d\t%.4f"
         )
+
+
+if __name__ == "__main__":
+    main()

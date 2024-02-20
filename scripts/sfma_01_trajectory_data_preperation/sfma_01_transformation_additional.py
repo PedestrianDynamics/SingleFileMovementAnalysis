@@ -14,11 +14,8 @@ from typing import List
 
 import numpy as np
 import numpy.typing as npt
-import sys
-import argparse
 
-sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
-from experiments import EXPERIMENTS
+from single_file_movement_analysis.experiments import EXPERIMENTS
 
 import pandas as pd
 import sqlite3
@@ -97,7 +94,7 @@ def read_sqlite_file(path: str, file: str) -> pd.DataFrame:
     return data
 
 
-if __name__ == "__main__":
+def main():
     arg: argparse.Namespace = get_parser_args()
     path: str = arg.path
     exp_key: str = arg.expKey
@@ -129,3 +126,7 @@ if __name__ == "__main__":
             newline="\r\n",
             fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%d\t%.4f"
         )
+
+
+if __name__ == "__main__":
+    main()

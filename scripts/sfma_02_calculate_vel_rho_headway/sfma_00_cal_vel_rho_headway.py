@@ -8,12 +8,9 @@ import sys
 
 import numpy as np
 
-sys.path.append(os.path.abspath(os.path.join('..', 'helper'))+'/')
-from experiments import EXPERIMENTS
-from helper import process_data
-from helper import read_trajectory_data, individual_velocity_top_view, voronoi_rho_top_view, \
+from single_file_movement_analysis.experiments import EXPERIMENTS
+from single_file_movement_analysis.helper import individual_velocity_top_view, voronoi_rho_top_view, \
     individual_velocity_side_view, individual_headway_side_view, voronoi_rho_side_view
-from experiments import EXPERIMENTS
 
 
 def get_parser_args():
@@ -46,7 +43,7 @@ def get_parser_args():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
     args = get_parser_args()
     path = args.path
     delta_t = args.deltaTime
@@ -126,3 +123,7 @@ if __name__ == "__main__":
         header = "#id\tfr\tx\ty\tz\tvelocity\theadway\trho"
         np.savetxt(path, result, fmt="%d\t%d\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f", delimiter="\t", header=header,
                    comments="", newline="\r\n")
+
+
+if __name__ == "__main__":
+    main()
