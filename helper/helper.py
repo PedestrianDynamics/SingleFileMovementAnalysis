@@ -137,7 +137,7 @@ def individual_velocity_side_view(data: npt.NDArray[np.float64], frame_data: npt
     :return: numpy array contain the velocity values
     """
     # order the pedestrians inside the current data frame by the position (0 to 3.14)
-    frame_data = frame_data[frame_data[:, 2].argsort()]
+    #frame_data = frame_data[frame_data[:, 2].argsort()]
     # initialize
     velocity = np.zeros((len(frame_data[:, 0])))
     indx = 0
