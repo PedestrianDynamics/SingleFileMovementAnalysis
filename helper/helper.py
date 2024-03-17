@@ -132,7 +132,7 @@ def individual_velocity_side_view(data: npt.NDArray[np.float64], frame_data: npt
     :param data: ndarray. Trajectory dataset
     :param frame_data: the data of a specific frame
     :param delta_t: short time constant (to smooth the traj. in order to avoid fluctuations of ped. stepping)
-    :param frame_current: ped_id of the current camera frame
+    :param frame_current: ID of the current camera frame
     :param fps: camera frame per second
     :return: numpy array contain the velocity values
     """
