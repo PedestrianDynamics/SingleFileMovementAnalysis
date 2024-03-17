@@ -161,22 +161,15 @@ def individual_velocity_side_view(data: npt.NDArray[np.float64], frame_data: npt
         if (ped_data_prev.size != 0) and (ped_data_next.size != 0):  # there is frame previous and next
             velocity[indx] = (data_frame_next[data_frame_next[:, 0] == ped_id][0][2] -
                               data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]) / delta_t
-            indx += 1
         elif (ped_data_prev.size != 0) and (ped_data_next.size == 0):  # there is frame previous
             velocity[indx] = (frame_data[frame_data[:, 0] == ped_id][0][2] -
                               data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]) / delta_t
-            indx += 1
         elif (ped_data_prev.size == 0) and (ped_data_next.size != 0):  # there is frame next
             velocity[indx] = (data_frame_next[data_frame_next[:, 0] == ped_id][0][2] -
                               frame_data[frame_data[:, 0] == ped_id][0][2]) / delta_t
-            indx += 1
         elif (ped_data_prev.size == 0) and (ped_data_next.size != 0):  # there is no frame previous and next
             velocity[indx] = (ped_data_max - ped_data_min) / delta_t
-            indx += 1
-        else:
-            indx += 1
-            continue
-
+        indx += 1
     return velocity
 
 def individual_headway_side_view(frame_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
