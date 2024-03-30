@@ -24,8 +24,8 @@ Download and install the requirements with
 ```bash
 pip3 install -r requirements.txt
 ```
-
-## Description of scripts
+<!-- 
+## Description of scripts (<font color="red">NOT UPDATED</font>)
 
 | Script | Description |
 | --- | --- |
@@ -38,48 +38,59 @@ pip3 install -r requirements.txt
 |[02_plot_timeseries_rho_v.py](scripts/03_plotting/02_plot_timeseries_rho_v.py)|Plot timeseries of density and velocity.|
 |[03_plot_rho_h_vel.py](scripts/03_plotting/03_plot_rho_h_vel.py)|Plot fundamental diagram (FD, rho-vel), and headway-velocity|
 |[04_plot_data_binning.py](scripts/03_plotting/04_plot_data_binning.py)|Plot bining data (rho-velocity) (headway-velocity)|
-|[05_plot_x_t.py](scripts/03_plotting/05_plot_x_t.py)|Plot the spacial-temporal (x-t) relation|
+|[05_plot_x_t.py](scripts/03_plotting/05_plot_x_t.py)|Plot the spacial-temporal (x-t) relation| -->
 
 ## Example of the analysis results
 
-- Determining the steady state [02_plot_timeseries_rho_v.py](scripts/03_plotting/02_plot_timeseries_rho_v.py)
+
+- The raw trajectories 
+<!-- [00_plot_traj_raw.py](scripts/03_plotting/00_plot_trajectories.py) -->
+
+<p align="center">
+   <img src="./notebooks/demo_data/traj_raw.png">
+<p>
+
+
+- The trajectories after transformation additional
+<!-- [00_plot_traj_raw.py](scripts/03_plotting/00_plot_trajectories.py) -->
+
+<p align="center">
+   <img src="./notebooks/demo_data/traj_trans_additional.png">
+</p>
+
+- The trajectories after transformation straight
+
+<p align="center">
+   <img src="./notebooks/demo_data/traj_straight.png">
+<p>
+
+- The spacial-temporal (space-time) relation 
+<!-- [05_plot_x_t.py](scripts/03_plotting/05_plot_x_t.py) -->
+<p align="center">
+   <img src="./notebooks/demo_data/space_time.png">
+<p>
+
+- Determining the steady state 
+<!-- [02_plot_timeseries_rho_v.py](scripts/03_plotting/02_plot_timeseries_rho_v.py) -->
 
 <p align="center"> 
-   <img src="https://user-images.githubusercontent.com/4458692/197458149-0b1a230c-38df-4303-b6a1-bd1e22ee4b88.png">
+   <img src="./notebooks/demo_data/steady_state.png">
 </p>
 
 
-- The fundamental diagram (FD, rho-vel), and headway-velocity [03_plot_rho_h_vel.py](scripts/03_plotting/03_plot_rho_h_vel.py)
+- The relations density-speed, and headway-speed 
+<!-- [03_plot_rho_h_vel.py](scripts/03_plotting/03_plot_rho_h_vel.py) -->
 
 <p align="center">
-   <img src="https://user-images.githubusercontent.com/4458692/197454439-f8ad5ae2-10a6-453e-8251-d7edf31d6803.png">
+   <img src="./notebooks/demo_data/density_speed.png">
 </p>
 
 <p align="center">
-   <img src="https://user-images.githubusercontent.com/4458692/197454455-d8ddcd18-165d-4185-9f73-7ff91f85109d.png">
+   <img src="./notebooks/demo_data/headway_speed.png">
 </p>
 
 
-- The raw trajectories [00_plot_traj_raw.py](scripts/03_plotting/00_plot_trajectories.py)
-
-<p align="center">
-   <img src="https://user-images.githubusercontent.com/4458692/197454570-d407cd02-980c-454a-b352-d7cda753de8a.png">
-<p>
-
-
-- The trajectories after transformation [00_plot_traj_raw.py](scripts/03_plotting/00_plot_trajectories.py)
-
-<p align="center">
-   <img src="https://user-images.githubusercontent.com/4458692/197454619-3804368f-82b1-4eaa-a725-42eb95e2e1b2.png">
-</p>
-
-- The spacial-temporal (x-t) relation [05_plot_x_t.py](scripts/03_plotting/05_plot_x_t.py)
-
-<p align="center">
-   <img src="https://user-images.githubusercontent.com/4458692/197456105-15032699-9ef1-4c03-b1ca-d0e137260d9a.png">
-<p>
-
-- Binning data (rho-velocity) (headway-velocity) [04_plot_data_binning.py](scripts/03_plotting/04_plot_data_binning.py)
+<!-- - Binning data (rho-velocity) (headway-velocity) [04_plot_data_binning.py](scripts/03_plotting/04_plot_data_binning.py)
 
 <p align="center">
    <img src="https://user-images.githubusercontent.com/4458692/197457493-2c1a78f8-96ff-4b4c-93da-cfce57e95497.png">
@@ -87,7 +98,7 @@ pip3 install -r requirements.txt
 
 <p align="center">
    <img src="https://user-images.githubusercontent.com/4458692/197457504-46f04bd9-1b74-4d31-aeac-558d1161bca5.png">
-</p>
+</p> -->
 
 <!-- ## Example of experiments
 
@@ -105,10 +116,11 @@ pip3 install -r requirements.txt
 ![penup_20221031_094831](https://user-images.githubusercontent.com/4458692/198972539-8f6fb110-e051-4316-968f-b879144e9fd7.jpg) -->
 
 ## Note
-1. To run script, write on the command line: 
-      ``bash
-      PYTHONPATH="." python3 <CHILD DIRECTORY NAME>/<SCRIPT NAME>.py <ARGUMENTS>
-      `` 
-2. To calculate the velocity_headway_rho of top-view camera experiments that captured only the straight measurement
+1. To calculate the velocity_headway_rho of top-view camera experiments that captured only the straight measurement
 area such as the [Caserne experiment](https://ped.fz-juelich.de/da/doku.php?id=corridor2), we use the same analysis
 methodology of side-view experiments.
+<!-- 2. To run script, write on the command line: 
+      ``bash
+      PYTHONPATH="." python3 <CHILD DIRECTORY NAME>/<SCRIPT NAME>.py <ARGUMENTS>
+      ``  -->
+
