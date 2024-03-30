@@ -116,7 +116,7 @@ pip3 install -r requirements.txt
 ![penup_20221031_094831](https://user-images.githubusercontent.com/4458692/198972539-8f6fb110-e051-4316-968f-b879144e9fd7.jpg) -->
 
 ## Note
-1. To calculate the velocity_headway_rho of top-view camera experiments that captured only the straight measurement
+1. To calculate the speed, headway, and density of top-view camera experiments that captured only the straight measurement
 area such as the [Caserne experiment](https://ped.fz-juelich.de/da/doku.php?id=corridor2), we use the same analysis
 methodology of side-view experiments.
 <!-- 2. To run script, write on the command line: 
