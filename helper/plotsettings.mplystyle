@@ -1,0 +1,31 @@
+#font.fantasy : 'Chicago'
+#font.cursive : 'cursive'
+#font.sans-serif : 'Arial'
+font.size : 24
+font.family: serif
+mathtext.fontset: cm
+font.serif : Times New Roman, DejaVu Serif, Bitstream Vera Serif, Computer Modern Roman, New Century Schoolbook, Century Schoolbook L, Utopia, ITC Bookman, Bookman, Nimbus Roman No9 L, Times New Roman, Palatino, Charter, serif
+axes.linewidth : 3
+axes.titlepad: 15
+axes.labelsize: 25
+lines.markersize : 10
+lines.linewidth : 4
+lines.linestyle : --
+lines.markeredgewidth : 2
+figure.figsize : 8,6
+figure.dpi : 100
+legend.fontsize : 20
+legend.frameon : False
+legend.loc : best
+legend.handlelength : 1
+legend.markerscale : 2
+ytick.major.size : 7
+ytick.major.width : 2
+ytick.minor.size : 4
+ytick.minor.width : 1
+ytick.minor.visible : True
+xtick.major.size : 7
+xtick.major.width : 2
+xtick.minor.size : 4
+xtick.minor.width : 1
+#text.usetex: True

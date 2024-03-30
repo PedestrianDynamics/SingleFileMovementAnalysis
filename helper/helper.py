@@ -49,16 +49,18 @@ def transformation_coord(data: npt.NDArray[np.float64], length: float, r: float)
 
     return data_new
 
-# def read_trajectory_data(path: str) -> npt.NDArray[np.float64]:
-#     """
-#     Read the trajectory data from text file
-#     :param path: path to the trajectory text file
-#     :return: numpy array contains the trajectory data
-#     """
-#     data = np.loadtxt(path, usecols=(0, 1, 2, 3, 4), comments="#")
-#     return data
+def individual_velocity_top_view(data: npt.NDArray[np.float64], frame_data: npt.NDArray[np.float64], delta_t: float, frame_current: int, frame_start: int, frame_end: int, fps: int, c: float, flag_disp) -> npt.NDArray[np.float64]:
 
-def individual_velocity_top_view(data: npt.NDArray[np.float64], frame_data: npt.NDArray[np.float64], delta_t: float, frame_current: int, frame_start: int, frame_end: int, fps: int, c: float) -> npt.NDArray[np.float64]:
+    if flag_disp == 'x':
+        return individual_velocity_top_view_x(data, frame_data, delta_t, frame_current, frame_start, frame_end, fps, c)
+    elif flag_disp == 'y':
+        return individual_velocity_top_view_y(data, frame_data, delta_t, frame_current, frame_start, frame_end, fps, c)
+    elif flag_disp == 'r':
+        return individual_velocity_top_view_r(data, frame_data, delta_t, frame_current, frame_start, frame_end, fps, c)
+    else:
+        raise ValueError('The target should be x, y, or r')
+
+def individual_velocity_top_view_x(data: npt.NDArray[np.float64], frame_data: npt.NDArray[np.float64], delta_t: float, frame_current: int, frame_start: int, frame_end: int, fps: int, c: float) -> npt.NDArray[np.float64]:
     """
     to calculate the individual velocity for top view experiments (value + direction) of pedestrians
     :param data: ndarray. Trajectory dataset
@@ -71,59 +73,148 @@ def individual_velocity_top_view(data: npt.NDArray[np.float64], frame_data: npt.
     :param c: circumference of the oval corridor
     :return: numpy array contain the velocity values
     """
+    velocity = np.zeros((len(frame_data[:, 0])))
+
     # 1. Get the data of the frame previous delta frame and the frame after delta frame
-    data_frame_prev = data[data[:, 1] == (frame_current - int(delta_t * fps) / 2)]
-    data_frame_next = data[data[:, 1] == (frame_current + int(delta_t * fps) / 2)]
+    data_frame_prev = data[data[:, 1] == (frame_current - int(delta_t * fps / 2))]
+    data_frame_next = data[data[:, 1] == (frame_current + int(delta_t * fps / 2))]
 
     if data_frame_prev.size == 0:  # in case delta_t frames prev. < time start the video
-        data_frame_prev = data[data[:, 1] == frame_start]  # take the first data frame (frame_start)
+        # data_frame_prev = data[data[:, 1] == frame_start]  # take the first data frame (frame_start)
+        velocity[:] = np.NaN
+        return velocity
     if data_frame_next.size == 0:  # in case delta_t frames prev. > time end the video
-        data_frame_next = data[data[:, 1] == frame_end]  # take the last data frame (frame_end)
+        # data_frame_next = data[data[:, 1] == frame_end]  # take the last data frame (frame_end)
+        velocity[:] = np.NaN
+        return velocity
 
     # 2. Order the rows of the data frame prev and next by the value of x-axis ascending (orders of ped. walking)
     # TODO: some pedestrians' information in the previous and next frame is missing (data extraction error). ERROR:
     #  in velocity calculation
-    data_frame_prev = data_frame_prev[data_frame_prev[:, 2].argsort()]
-    data_frame_next = data_frame_next[data_frame_next[:, 2].argsort()]
+    data_frame_prev_x = data_frame_prev[:, 2]
+    data_frame_next_x = data_frame_next[:, 2]
+    data_frame_prev = data_frame_prev[data_frame_prev_x.argsort()]
+    data_frame_next = data_frame_next[data_frame_next_x.argsort()]
 
     # Some of the pedestrians are missing (trajectories not detected on specific time frames). So, it is better
     # to iterate over one by one
-    velocity = np.zeros((len(frame_data[:, 0])))
     indx = 0
     ped_ids = frame_data[:, 0]
     for ped_id in ped_ids:
+        x1 = data_frame_next[data_frame_next[:, 0] == ped_id][0][2]
+        x2 = data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]
+
         ped_data_frame = data_frame_next[data_frame_next[:, 0] == ped_id]
-        if ped_data_frame.size != 0:
-            try:
-                velocity[indx] = (data_frame_next[data_frame_next[:, 0] == ped_id][0][2] -
-                                  data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]) / delta_t
-                indx += 1
-            except:
-                # TODO: some pedestrians' information in the previous and next frame is missing (data extraction
-                #  error). ERROR: in velocity calculation. For now I will do it like this
-                velocity[indx] = 100
-                indx += 1
+        
+        if x1 > x2 and np.abs(x1-x2) < 1:
+            if ped_data_frame.size != 0:
+                try:
+                    velocity[indx] = (x1 - x2) / delta_t
+                    # if velocity[indx] > 37:
+                    #     print('here',x1, x2, y1, y2, frame_current,delta_t,ped_id,data_frame_next.shape,data_frame_prev.shape)
+                    # if velocity[indx] > 37:
+                        # print(x1, x2, y1, y2, frame_current,delta_t,ped_id,data_frame_next.shape,data_frame_prev.shape)
+                    indx += 1
+                except:
+                    # TODO: some pedestrians' information in the previous and next frame is missing (data extraction
+                    #  error). ERROR: in velocity calculation. For now I will do it like this
+                    velocity[indx] = np.NAN
+                    indx += 1
+            # if ped_id == 27 and frame_current == 3392:
+            #     print(x1, x2, y1, y2, frame_current,delta_t,ped_id,data_frame_next.shape,data_frame_prev.shape)
         else:
-            # TODO: indx += 1 ?!
-            continue
+            # when the pedestrina finish the round and start new
+            velocity[indx] = np.NAN
+            indx += 1
+
+    return velocity
+
+def individual_velocity_top_view_r(data: npt.NDArray[np.float64], frame_data: npt.NDArray[np.float64], delta_t: float, frame_current: int, frame_start: int, frame_end: int, fps: int, c: float) -> npt.NDArray[np.float64]:
+    """
+    to calculate the individual velocity for top view experiments (value + direction) of pedestrians
+    :param data: ndarray. Trajectory dataset
+    :param frame_data: the data of a specific frame
+    :param delta_t: short time constant (to smooth the traj. in order to avoid fluctuations of ped. stepping)
+    :param frame_current: ped_id of the current camera frame
+    :param frame_start: ped_id of the starting camera frame
+    :param frame_end: ped_id of the ending camera frame
+    :param fps: camera frame per second
+    :param c: circumference of the oval corridor
+    :return: numpy array contain the velocity values
+    """
+    velocity = np.zeros((len(frame_data[:, 0])))
+
+    # 1. Get the data of the frame previous delta frame and the frame after delta frame
+    data_frame_prev = data[data[:, 1] == (frame_current - int(delta_t * fps / 2))]
+    data_frame_next = data[data[:, 1] == (frame_current + int(delta_t * fps / 2))]
+
+    if data_frame_prev.size == 0:  # in case delta_t frames prev. < time start the video
+        # data_frame_prev = data[data[:, 1] == frame_start]  # take the first data frame (frame_start)
+        velocity[:] = np.NaN
+        return velocity
+    if data_frame_next.size == 0:  # in case delta_t frames prev. > time end the video
+        # data_frame_next = data[data[:, 1] == frame_end]  # take the last data frame (frame_end)
+        velocity[:] = np.NaN
+        return velocity
+
+    # 2. Order the rows of the data frame prev and next by the value of x-axis ascending (orders of ped. walking)
+    # TODO: some pedestrians' information in the previous and next frame is missing (data extraction error). ERROR:
+    #  in velocity calculation
+    data_frame_prev_r = np.sqrt(data_frame_prev[:, 2] ** 2 + data_frame_prev[:, 3] ** 2)
+    data_frame_next_r = np.sqrt(data_frame_next[:, 2] ** 2 + data_frame_next[:, 3] ** 2)
+    data_frame_prev = data_frame_prev[data_frame_prev_r.argsort()]
+    data_frame_next = data_frame_next[data_frame_next_r.argsort()]
+
+    # Some of the pedestrians are missing (trajectories not detected on specific time frames). So, it is better
+    # to iterate over one by one
+    indx = 0
+    ped_ids = frame_data[:, 0]
+    for ped_id in ped_ids:
+        x1 = data_frame_next[data_frame_next[:, 0] == ped_id][0][2]
+        x2 = data_frame_prev[data_frame_prev[:, 0] == ped_id][0][2]
+        y1 = data_frame_next[data_frame_next[:, 0] == ped_id][0][3]
+        y2 = data_frame_prev[data_frame_prev[:, 0] == ped_id][0][3]
+
+        ped_data_frame = data_frame_next[data_frame_next[:, 0] == ped_id]
+        
+        if x1 > x2 and np.abs(x1-x2) < 1:
+            if ped_data_frame.size != 0:
+                try:
+                    velocity[indx] = (np.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)) / delta_t
+                    # if velocity[indx] > 37:
+                    #     print('here',x1, x2, y1, y2, frame_current,delta_t,ped_id,data_frame_next.shape,data_frame_prev.shape)
+                    # if velocity[indx] > 37:
+                        # print(x1, x2, y1, y2, frame_current,delta_t,ped_id,data_frame_next.shape,data_frame_prev.shape)
+                    indx += 1
+                except:
+                    # TODO: some pedestrians' information in the previous and next frame is missing (data extraction
+                    #  error). ERROR: in velocity calculation. For now I will do it like this
+                    velocity[indx] = np.NAN
+                    indx += 1
+            # if ped_id == 27 and frame_current == 3392:
+            #     print(x1, x2, y1, y2, frame_current,delta_t,ped_id,data_frame_next.shape,data_frame_prev.shape)
+        else:
+            # when the pedestrina finish the round and start new
+            velocity[indx] = np.NAN
+            indx += 1
 
     # 4. If the last ped. in the prev. frame enter the second iteration of the straight setup in the next frame
-    if data_frame_prev[0, 0] == data_frame_next[-1, 0]:
-        displacement = (data_frame_prev[0, 2] - 0) + (c - data_frame_next[-1, 2])
-        velocity_first = displacement / delta_t
-        if data_frame_prev[0, 0] == frame_data[0, 0]:
-            velocity[0] = velocity_first
-        else:
-            velocity[-1] = velocity_first
-    elif data_frame_prev[-1, 0] == data_frame_next[0, 0]:  # if the first ped. in the prev. frame walk in the opposite
-        # side and become the last ped. in the second iteration in the next frame
-        displacement = (c - data_frame_prev[-1, 2]) + (data_frame_next[0, 2] - 0)
-        velocity_last = displacement / delta_t
-        if data_frame_prev[0, 0] == frame_data[0, 0]:
-            velocity[-1] = velocity_last
-        else:
-            velocity[0] = velocity_last
-
+    
+    ###IGNORE THIS PART
+    # if data_frame_prev[0, 0] == data_frame_next[-1, 0]:
+    #     if data_frame_prev[0, 0] == frame_data[0, 0]:
+    #         velocity[0] = np.NaN
+    #     else:
+    #         velocity[-1] = np.NaN
+    # elif data_frame_prev[-1, 0] == data_frame_next[0, 0]:  # if the first ped. in the prev. frame walk in the opposite
+    #     # side and become the last ped. in the second iteration in the next frame
+    #     if data_frame_prev[0, 0] == frame_data[0, 0]:
+    #         velocity[-1] = np.NaN
+    #     else:
+    #         velocity[0] = np.NaN
+    # if frame_current == 3392 or frame_current == 3393 or frame_current == 3394:
+    #     print(velocity[27],np.nanmax(velocity))
+    #print(frame_current,velocity[~np.isnan(velocity)].max())
     return velocity
 
 def individual_velocity_side_view(data: npt.NDArray[np.float64], frame_data: npt.NDArray[np.float64], delta_t: float, frame_current: int, fps: int) -> npt.NDArray[np.float64]:
@@ -144,9 +235,8 @@ def individual_velocity_side_view(data: npt.NDArray[np.float64], frame_data: npt
     ped_ids = frame_data[:, 0]
 
     # 1. Get the data of the frame previous delta frame and the frame after delta frame
-    data_frame_prev = data[data[:, 1] == (frame_current - int(delta_t * fps) / 2)]
-    data_frame_next = data[data[:, 1] == (frame_current + int(delta_t * fps) / 2)]
-
+    data_frame_prev = data[data[:, 1] == (frame_current - int(delta_t * fps / 2) )]
+    data_frame_next = data[data[:, 1] == (frame_current + int(delta_t * fps / 2) )]
     # 2. iterate over ped. inside the current frame one by one to calculate the velocity
     for ped_id in ped_ids:
         ped_data_prev = data_frame_prev[data_frame_prev[:, 0] == ped_id]
@@ -170,6 +260,7 @@ def individual_velocity_side_view(data: npt.NDArray[np.float64], frame_data: npt
         elif (ped_data_prev.size == 0) and (ped_data_next.size != 0):  # there is no frame previous and next
             velocity[indx] = (ped_data_max - ped_data_min) / delta_t
         indx += 1
+        
     return velocity
 
 def individual_headway_side_view(frame_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
@@ -185,14 +276,14 @@ def individual_headway_side_view(frame_data: npt.NDArray[np.float64]) -> npt.NDA
     # 1. sort the pedestrians inside the current data frame by the position (0 to Max)
     frame_data = frame_data[frame_data[:, 2].argsort()]
 
-    if len(frame_data) == 0:
-        print("INFO:\tThe number of the pedestrians is small = 0")
-    elif len(frame_data) == 1:
-        print("INFO:\tThe number of the pedestrians is small = 1")
-    else:
+    if len(frame_data) != 0 or len(frame_data) != 1:
         # Calculate the Headway between the pedestrians
         shifted_frame_data = shift(frame_data[:, 2], -1, cval=np.NaN)
         headway = shifted_frame_data - frame_data[:, 2]
+    # Other cases where we can not calculate the headway::
+    # len(frame_data) == 0, the number of the pedestrians is small = 0
+    # len(frame_data) == 1, the number of the pedestrians is small = 1
+
 
     return headway
 
@@ -285,7 +376,7 @@ def process_data(arr: npt.NDArray[np.float64], experiment_name: str) -> npt.NDAr
 
     return arr
 
-def calculate_speed_density_headway(data: npt.NDArray[np.float64], fps: int, c: float, camera_capture: int, delta_t: float) -> npt.NDArray[np.float64]:
+def calculate_speed_density_headway(data: npt.NDArray[np.float64], fps: int, c: float, camera_capture: int, delta_t: float, flag_disp = 'x') -> npt.NDArray[np.float64]:
     """
     calculate the speed and density of pedestrians in the experiment
     :param data: numpy array. Trajectory data
@@ -313,7 +404,7 @@ def calculate_speed_density_headway(data: npt.NDArray[np.float64], fps: int, c: 
         # B. Calculate pedestrian velocity
         if camera_capture == 0:
             velocity = individual_velocity_top_view(data, frame_data, delta_t, fr, frame_start,
-                                                    frame_end, fps, c)
+                                                    frame_end, fps, c, flag_disp)
             # C. Calculate pedestrians' headway
             # Calculate the headway by taking the difference between each row x value and the previous
             headway = np.diff(frame_data[:, 2])
