@@ -1,4 +1,5 @@
 # SingleFileMovementAnalysis
+[![DOI](https://zenodo.org/badge/535776759.svg)](https://zenodo.org/doi/10.5281/zenodo.10908396)
 
 ## Introduction
 This repository contain scripts and Jupyter notebooks to analyze single-file movement experiments recorded by a top-view (straight, oval), or side-view camera.
