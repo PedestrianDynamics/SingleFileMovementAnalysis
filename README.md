@@ -2,7 +2,7 @@
 [![DOI](https://zenodo.org/badge/535776759.svg)](https://zenodo.org/doi/10.5281/zenodo.10908396)
 
 ## Introduction
-This repository contain scripts and Jupyter notebooks to analyze single-file movement experiments recorded by a top-view (straight, oval), or side-view camera.
+This repository contains scripts and Jupyter notebooks to analyze single-file movement experiments recorded by a top-view (straight, oval), or side-view camera.
 
 **Example of top-view experiments**: [Gender Composition in Single-File Experiments](https://doi.org/10.34735/ped.2021.5). The analysis code of the experiment using  [Jupyter notebook](/notebooks/top_view_experiments.ipynb)
 
@@ -16,7 +16,7 @@ This repository contain scripts and Jupyter notebooks to analyze single-file mov
     <img src="notebooks/demo_data/gender_subaih2020.png" alt="Alternative text"/>
 </p>
 
-> **NOTE:** the demo data for both examples can be downloaded from the [Pedestrian Dynamics Data Archive](https://ped.fz-juelich.de/da/doku.php?id=start) then store it in a directory the following repository [demo_data](/notebooks/demo_data).
+> **NOTE:** The demo data for both examples can be downloaded from the [Pedestrian Dynamics Data Archive](https://ped.fz-juelich.de/da/doku.php?id=start) then stored in a directory the following repository [demo_data](/notebooks/demo_data).
 
 ## Requirements
 
@@ -52,7 +52,7 @@ pip3 install -r requirements.txt
 <p>
 
 
-- The trajectories after transformation additional
+- The trajectories after the transformation additional
 <!-- [00_plot_traj_raw.py](scripts/03_plotting/00_plot_trajectories.py) -->
 
 <p align="center">
@@ -120,6 +120,9 @@ pip3 install -r requirements.txt
 1. To calculate the speed, headway, and density of top-view camera experiments that captured only the straight measurement
 area such as the [Caserne experiment](https://ped.fz-juelich.de/da/doku.php?id=corridor2), we use the same analysis
 methodology of side-view experiments.
+
+## To cite
+Subaih, R., Tordeux, A., & Chraibi, M. (2024). Comprehensive Review and New Analysis Software for Single-file Pedestrian Experiments. Collective Dynamics, 9, 1–47. https://doi.org/10.17815/CD.2024.185.
 <!-- 2. To run script, write on the command line: 
       ``bash
       PYTHONPATH="." python3 <CHILD DIRECTORY NAME>/<SCRIPT NAME>.py <ARGUMENTS>
